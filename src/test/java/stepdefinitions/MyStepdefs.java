@@ -9,8 +9,13 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import keywords.WebUI;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import utils.LogUtils;
+
+import java.sql.Driver;
 
 public class MyStepdefs {
     @Given("a user successfully log in")
@@ -25,7 +30,12 @@ public class MyStepdefs {
 //        LogUtils.info("HEHEHEH");
 
         BaseTest.createDriver();
-        DriverManager.getDriver().get("https://www.youtube.com/watch?v=7efrS-2oTrg&list=PLgcMOggxCIP1DNm0WOVZP6vbvMVO4Vl7H&index=3");
+        DriverManager.getDriver().get(PropertiesHelpers.getValue("URLtest"));
+        WebUI.sendText(By.cssSelector(".ui-autocomplete-input"), "hehehehehe", Keys.ENTER);
+
+        WebUI.getCurrentURL(PropertiesHelpers.getValue("URL"));
+
+        BaseTest.closeDriver();
     }
 
     @And("I navigate to Sign in page")

@@ -3,27 +3,33 @@ package keywords;
 import constants.ConstantGlobal;
 import drivers.DriverManager;
 import helpers.PropertiesHelpers;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import utils.LogUtils;
-import org.openqa.selenium.By;
 
 
+import java.sql.Driver;
 import java.time.Duration;
 
 public class WebUI {
+
+    private final static long EXPLICIT_TIMEOUT = ConstantGlobal.EXPLICIT_TIMEOUT;
+    private final static long PAGE_LOAD_TIMEOUT = ConstantGlobal.PAGE_LOAD_TIMEOUT;
 
     static {
         PropertiesHelpers.loadAllFiles();
     }
 
+    public static WebElement getWebElement(By by) {
+        return DriverManager.getDriver().findElement(by);
+    }
+
     public static void waitForPageLoaded() {
         WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(),
-                Duration.ofSeconds(ConstantGlobal.PAGE_LOAD_TIMEOUT),
+                Duration.ofSeconds(PAGE_LOAD_TIMEOUT),
                 Duration.ofMillis(500));
 
         JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
@@ -43,13 +49,15 @@ public class WebUI {
                 wait.until(jsLoad);
             } catch (Throwable e) {
                 e.printStackTrace();
-                Assert.fail("Timeout waiting for the page loaded (JavaScript). (" + ConstantGlobal.PAGE_LOAD_TIMEOUT + "s)");
+                Assert.fail("Timeout waiting for the page loaded (JavaScript). (" + PAGE_LOAD_TIMEOUT + "s)");
             }
         }
     }
 
     public static void waitForAngularLoad() {
-        WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(ConstantGlobal.PAGE_LOAD_TIMEOUT), Duration.ofMillis(500));
+        WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(),
+                Duration.ofSeconds(PAGE_LOAD_TIMEOUT),
+                Duration.ofMillis(500));
         JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
         final String angularReadyScript = "return angular.element(document).injector().get('$http').pendingRequests.length === 0";
 
@@ -70,13 +78,15 @@ public class WebUI {
                 //Wait for jQuery to load
                 wait.until(angularLoad);
             } catch (Throwable error) {
-                Assert.fail("Timeout waiting for Angular load. (" + ConstantGlobal.PAGE_LOAD_TIMEOUT + "s)");
+                Assert.fail("Timeout waiting for Angular load. (" + PAGE_LOAD_TIMEOUT + "s)");
             }
         }
     }
 
     public static void waitForJQueryLoad() {
-        WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(ConstantGlobal.PAGE_LOAD_TIMEOUT), Duration.ofMillis(500));
+        WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(),
+                Duration.ofSeconds(PAGE_LOAD_TIMEOUT),
+                Duration.ofMillis(500));
         JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
 
         //Wait for jQuery to load
@@ -95,7 +105,7 @@ public class WebUI {
                 //Wait for jQuery to load
                 wait.until(jQueryLoad);
             } catch (Throwable error) {
-                Assert.fail("Timeout waiting for JQuery load. (" + ConstantGlobal.PAGE_LOAD_TIMEOUT + "s)");
+                Assert.fail("Timeout waiting for JQuery load. (" + PAGE_LOAD_TIMEOUT + "s)");
             }
         }
     }
@@ -114,7 +124,133 @@ public class WebUI {
         Assert.assertTrue(DriverManager.getDriver().findElement(by).isDisplayed(), message);
     }
 
+    public static void waitForElementVisible(By by) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(EXPLICIT_TIMEOUT),
+                    Duration.ofMillis(500));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for element visible." + by.toString());
+            Assert.fail("Time out waiting for element visible." + by);
+        }
+    }
 
+    //Checks for rendered elements
+    public static void waitForElementVisible(By by, int timeOut) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(timeOut),
+                    Duration.ofMillis(500));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for element visible." + by.toString());
+            Assert.fail("Time out waiting for element visible.");
+        }
+    }
 
+    //Checks for presence in DOM, hidden elements
+    public static void waitForElementPresent(By by) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(EXPLICIT_TIMEOUT),
+                    Duration.ofMillis(500));
+            wait.until(ExpectedConditions.presenceOfElementLocated(by));
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for element visible." + by.toString());
+            Assert.fail("Time out waiting for element visible.");
+        }
+    }
+
+    public static void waitForElementPresent(By by, int timeOut) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(timeOut),
+                    Duration.ofMillis(500));
+            wait.until(ExpectedConditions.presenceOfElementLocated(by));
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for element visible." + by.toString());
+            Assert.fail("Time out waiting for element visible.");
+        }
+    }
+
+    public static void waitForElementClickable(By by) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(EXPLICIT_TIMEOUT),
+                    Duration.ofMillis(500));
+            wait.until(ExpectedConditions.elementToBeClickable(by));
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for element visible." + by.toString());
+            Assert.fail("Time out waiting for element visible.");
+        }
+    }
+
+    public static void waitForElementClickable(By by, int timeOut) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(timeOut),
+                    Duration.ofMillis(500));
+            wait.until(ExpectedConditions.elementToBeClickable(by));
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for element visible." + by.toString());
+            Assert.fail("Time out waiting for element visible.");
+        }
+    }
+
+    public static void openURL(String url) {
+        DriverManager.getDriver().get(url);
+        LogUtils.info("Open URL: " + url);
+        waitForPageLoaded();
+    }
+
+    public static void clickElement(By by) {
+        waitForPageLoaded();
+        waitForElementClickable(by);
+        getWebElement(by).click();
+        LogUtils.info("Click element: " + by);
+    }
+
+    public static void clickElement(By by, int timeOut) {
+        waitForPageLoaded();
+        ;
+        waitForElementClickable(by, timeOut);
+        getWebElement(by).click();
+        LogUtils.info("Click element: " + by);
+    }
+
+    public static void sendText(By by, String value) {
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        getWebElement(by).sendKeys(value);
+        LogUtils.info("Set text: " + value + " on element " + by);
+    }
+
+    public static void sendText(By by, String value, Keys key) {
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        getWebElement(by).sendKeys(value, key);
+        LogUtils.info("Set text: " + value + " on element " + by);
+    }
+
+    public static void getText(By by) {
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        String text = getWebElement(by).getText();
+        LogUtils.info("Get text: " + by);
+    }
+
+    public static void getCurrentURL(String expectedUrl) {
+        waitForPageLoaded();
+        String currentUrl = DriverManager.getDriver().getCurrentUrl();
+        Assert.assertEquals(expectedUrl, currentUrl, "Current  found is not as expected.");
+
+    }
 
 }

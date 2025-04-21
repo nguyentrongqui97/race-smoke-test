@@ -15,7 +15,6 @@ public class ConstantGlobal {
     public final static String PASSWORD = PropertiesHelpers.getValue("PASSWORD");
     public final static long STEP_TIME = Long.parseLong(PropertiesHelpers.getValue("STEP_TIME"));
     public final static long EXPLICIT_TIMEOUT = Long.parseLong(PropertiesHelpers.getValue("EXPLICIT_TIMEOUT"));
-    public final static long EXPLICIT_WAITTIME = Long.parseLong(PropertiesHelpers.getValue("EXPLICIT_WAITTIME"));
     public final static long PAGE_LOAD_TIMEOUT = Long.parseLong(PropertiesHelpers.getValue("PAGE_LOAD_TIMEOUT"));
     public final static String ENV = PropertiesHelpers.getValue("ENV");
     public final static String SCREENSHOT_FAIL = PropertiesHelpers.getValue("SCREENSHOT_FAIL");

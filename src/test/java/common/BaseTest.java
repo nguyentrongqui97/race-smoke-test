@@ -2,6 +2,7 @@ package common;
 
 import constants.ConstantGlobal;
 import drivers.DriverManager;
+import keywords.WebUI;
 import org.aspectj.apache.bcel.classfile.Constant;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -65,9 +66,14 @@ public class BaseTest {
         return driver;
     }
 
+//    public static void closeDriver() {
+//        if (DriverManager.getDriver() == null) {
+//            DriverManager.getDriver().quit();
+//        }
+//    }
     public static void closeDriver() {
-        if (DriverManager.getDriver() == null) {
-            DriverManager.quit();
+        if (DriverManager.getDriver() != null) {
+            DriverManager.getDriver().quit();
         }
     }
 
@@ -88,10 +94,7 @@ public class BaseTest {
                 driver = initChromeDriver();
         }
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(ConstantGlobal.EXPLICIT_WAITTIME, TimeUnit.SECONDS);
         return driver;
-
-
     }
 
     public static void createDriver() {
