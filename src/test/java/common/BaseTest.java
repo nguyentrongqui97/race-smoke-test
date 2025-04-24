@@ -30,7 +30,7 @@ public class BaseTest {
             options.addArguments("--start-maximized");
         }
 
-        driver = new ChromeDriver();
+        driver = new ChromeDriver(options);
         return driver;
     }
 
@@ -66,11 +66,6 @@ public class BaseTest {
         return driver;
     }
 
-//    public static void closeDriver() {
-//        if (DriverManager.getDriver() == null) {
-//            DriverManager.getDriver().quit();
-//        }
-//    }
     public static void closeDriver() {
         if (DriverManager.getDriver() != null) {
             DriverManager.getDriver().quit();
