@@ -178,6 +178,42 @@ public class WebUI {
         }
     }
 
+    public static void waitForTextVisible(By by) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(EXPLICIT_TIMEOUT),
+                    Duration.ofMillis(500));
+
+            wait.until(driver -> {
+                WebElement element = driver.findElement(by);
+                return element.isDisplayed() && !element.getText().trim().isEmpty();
+            });
+
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for text to be visible in element: " + by.toString());
+            Assert.fail("Time out waiting for text to be visible in element: " + by);
+        }
+    }
+
+    public static void waitForTextVisible(By by, int timeout) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(timeout),
+                    Duration.ofMillis(500));
+
+            wait.until(driver -> {
+                WebElement element = driver.findElement(by);
+                return element.isDisplayed() && !element.getText().trim().isEmpty();
+            });
+
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for text to be visible in element: " + by.toString());
+            Assert.fail("Time out waiting for text to be visible in element: " + by);
+        }
+    }
+
     public static void waitForElementClickable(By by) {
         try {
             WebDriverWait wait = new WebDriverWait(
@@ -204,6 +240,8 @@ public class WebUI {
         }
     }
 
+
+
     public static void openURL(String url) {
         DriverManager.getDriver().get(url);
         LogUtils.info("Open URL: " + url);
@@ -219,7 +257,6 @@ public class WebUI {
 
     public static void clickElement(By by, int timeOut) {
         waitForPageLoaded();
-        ;
         waitForElementClickable(by, timeOut);
         getWebElement(by).click();
         LogUtils.info("Click element: " + by);
@@ -252,5 +289,27 @@ public class WebUI {
         Assert.assertEquals(expectedUrl, currentUrl, "Current  found is not as expected.");
 
     }
+
+    public static void assertTextEqual(By by, String expectedText){
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        String actualText = getWebElement(by).getText().trim();
+        Assert.assertEquals(actualText, expectedText, "Text does not match for locator: " + by.toString());
+    }
+
+    public static void assertUrlEqual(String expectedUrl){
+        waitForPageLoaded();
+        String actualUrl = DriverManager.getDriver().getCurrentUrl();
+        Assert.assertEquals(actualUrl, expectedUrl,"Current URL: " + actualUrl + "does not match the expected URL: " + expectedUrl);
+    }
+
+    public static void sleep(double second) {
+        try {
+            Thread.sleep((long) (1000 * second));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

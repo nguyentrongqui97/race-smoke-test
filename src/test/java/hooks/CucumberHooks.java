@@ -1,12 +1,10 @@
 package hooks;
 
-import common.BaseTest;
+import drivers.DriverFactory;
 import drivers.DriverManager;
 import helpers.CaptureHelpers;
 import helpers.PropertiesHelpers;
 import io.cucumber.java.*;
-import org.testng.ITestResult;
-import utils.LogUtils;
 
 public class CucumberHooks {
 
@@ -20,20 +18,20 @@ public class CucumberHooks {
     public static void afterAll() {
         System.out.println("================ afterAll ================");
         if(DriverManager.getDriver() != null){
-            BaseTest.closeDriver();
+            DriverFactory.closeDriver();
         }
     }
 
     @Before
     public void beforeScenario() {
         System.out.println("================ beforeScenario ================");
-        BaseTest.createDriver();
+        DriverFactory.createDriver();
     }
 
     @After
     public void afterScenario() {
         System.out.println("================ afterScenario ================");
-        BaseTest.closeDriver();
+        DriverFactory.closeDriver();
 
     }
 

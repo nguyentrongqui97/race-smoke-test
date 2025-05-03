@@ -26,5 +26,6 @@ public class ConstantGlobal {
     public final static String AUTHOR = PropertiesHelpers.getValue("AUTHOR");
     public final static String LOCATE = PropertiesHelpers.getValue("LOCATE");
     public static final String CHROME_BINARY_PATH = PropertiesHelpers.getValue("CHROME_BROWSER_BINARY");
+    public static final String URL_DASHBOARD = PropertiesHelpers.getValue("URL_DASHBOARD");
 
 }
