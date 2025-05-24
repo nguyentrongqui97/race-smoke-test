@@ -5,12 +5,14 @@ import org.openqa.selenium.WebDriver;
 import pages.CommonPage;
 import pages.DashboardPage;
 import pages.LoginPage;
+import pages.SignUpPage;
 
 public class TestContext {
 
     private CommonPage commonPage;
     private LoginPage loginPage;
     private DashboardPage dashBoardPage;
+    private SignUpPage signUpPage;
 
     public TestContext() {
 //        ThreadGuard.protect(new DriverFactory().createDriver());
@@ -36,6 +38,13 @@ public class TestContext {
             dashBoardPage = new DashboardPage();
         }
         return dashBoardPage;
+    }
+
+    public SignUpPage getSignUpPage(){
+        if (signUpPage == null) {
+            signUpPage = new SignUpPage();
+        }
+        return signUpPage;
     }
 
     public WebDriver getDriver() {

@@ -12,7 +12,6 @@ public class ConstantGlobal {
     public final static String URL = PropertiesHelpers.getValue("URL");
     public final static String URL_CRM = PropertiesHelpers.getValue("URL_CRM");
     public final static String USERNAME = PropertiesHelpers.getValue("USERNAME");
-    public final static String PASSWORD = PropertiesHelpers.getValue("PASSWORD");
     public final static long STEP_TIME = Long.parseLong(PropertiesHelpers.getValue("STEP_TIME"));
     public final static long EXPLICIT_TIMEOUT = Long.parseLong(PropertiesHelpers.getValue("EXPLICIT_TIMEOUT"));
     public final static long PAGE_LOAD_TIMEOUT = Long.parseLong(PropertiesHelpers.getValue("PAGE_LOAD_TIMEOUT"));
@@ -27,5 +26,8 @@ public class ConstantGlobal {
     public final static String LOCATE = PropertiesHelpers.getValue("LOCATE");
     public static final String CHROME_BINARY_PATH = PropertiesHelpers.getValue("CHROME_BROWSER_BINARY");
     public static final String URL_DASHBOARD = PropertiesHelpers.getValue("URL_DASHBOARD");
+    public static final String MAIL_GENERATOR_URL = PropertiesHelpers.getValue("MAIL_GENERATOR_URL");
+    public static final String PASSWORD = PropertiesHelpers.getValue("PASSWORD");
+    public static final String EMAIL_TARGET_SENDER = PropertiesHelpers.getValue("EMAIL_TARGET_SENDER");
 
 }

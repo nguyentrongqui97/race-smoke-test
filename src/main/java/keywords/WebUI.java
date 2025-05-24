@@ -11,7 +11,6 @@ import org.testng.Assert;
 import utils.LogUtils;
 
 
-import java.sql.Driver;
 import java.time.Duration;
 
 public class WebUI {
@@ -122,6 +121,15 @@ public class WebUI {
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
         System.out.println("Verify " + by + " is displayed");
         Assert.assertTrue(DriverManager.getDriver().findElement(by).isDisplayed(), message);
+    }
+
+
+    public static boolean verifyElementVisibleReturnBoolean(By by) {
+        WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        System.out.println("Verify " + by + " is displayed.");
+        Assert.assertEquals(DriverManager.getDriver().findElement(by).isDisplayed(), "Element not visible.");
+        return true;
     }
 
     public static void waitForElementVisible(By by) {
@@ -280,14 +288,20 @@ public class WebUI {
         waitForPageLoaded();
         waitForElementVisible(by);
         String text = getWebElement(by).getText();
-        LogUtils.info("Get text: " + by);
+        LogUtils.info("Get text: " + text);
+    }
+
+    public static void getTextInAttribute(By by) {
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        String text = getWebElement(by).getAttribute("value");
+        LogUtils.info("Get text: " + text);
     }
 
     public static void getCurrentURL(String expectedUrl) {
         waitForPageLoaded();
         String currentUrl = DriverManager.getDriver().getCurrentUrl();
         Assert.assertEquals(expectedUrl, currentUrl, "Current  found is not as expected.");
-
     }
 
     public static void assertTextEqual(By by, String expectedText){

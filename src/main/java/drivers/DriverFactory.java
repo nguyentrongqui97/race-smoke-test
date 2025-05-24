@@ -15,7 +15,10 @@ public class DriverFactory {
         WebDriver driver;
         System.out.println("Launching Chrome browser...");
 
+        System.setProperty("webdriver.chrome.driver","C:\\Program Files\\Google\\Chrome-for-testing\\chromedriver-win64\\chromedriver.exe");
+
         ChromeOptions options = new ChromeOptions();
+        options.setBinary("C:\\Program Files\\Google\\Chrome-for-testing\\chrome-win64\\chrome.exe");
 
         if(ConstantGlobal.HEADLESS == true) {
             options.addArguments("--headless=new");
