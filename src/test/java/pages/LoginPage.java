@@ -10,7 +10,7 @@ public class LoginPage extends CommonPage {
     static By password = By.cssSelector("#password");
     private By loginButton = By.cssSelector("button.MuiButtonBase-root:nth-child(8)");
     private By signInButton = By.cssSelector("button.MuiButton-contained:nth-child(3)");
-
+    private By createAnAccountHereLink = By.cssSelector("p.MuiTypography-root:nth-child(5) > a:nth-child(1)");
 
 
     public void goToLoginPage(){
@@ -20,6 +20,12 @@ public class LoginPage extends CommonPage {
 
     public void typeUserName(String userName) {
         sendText(username, userName);
+    }
+
+    public void goToSignUpPage() {
+        openURL(ConstantGlobal.URL);
+        clickElement(loginButton);
+        clickElement(createAnAccountHereLink);
     }
 
     public void typePassword(String passwordInput) {

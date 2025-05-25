@@ -12,6 +12,8 @@ import utils.LogUtils;
 
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Random;
 
 public class WebUI {
 
@@ -156,6 +158,19 @@ public class WebUI {
         } catch (Throwable error) {
             LogUtils.error("Time out waiting for element visible." + by.toString());
             Assert.fail("Time out waiting for element visible.");
+        }
+    }
+
+    public static void waitForElementNotVisible(By by) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(EXPLICIT_TIMEOUT),
+                    Duration.ofMillis(500));
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for element to become not visible: " + by.toString());
+            Assert.fail("Time out waiting for element to become not visible: " + by);
         }
     }
 
@@ -322,6 +337,36 @@ public class WebUI {
             Thread.sleep((long) (1000 * second));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void selectARandomOptionFromDropDown(By dropdownLocator, By optionsLocator){
+        try {
+            WebDriver driver = DriverManager.getDriver();
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(EXPLICIT_TIMEOUT),
+                    Duration.ofMillis(500));
+
+            waitForElementClickable(dropdownLocator);
+            clickElement(dropdownLocator);
+
+            List<WebElement> options = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(optionsLocator));
+
+            if(options.isEmpty()){
+                LogUtils.error("No dropdown options found for locator: " + optionsLocator);
+                Assert.fail("Dropdown options list is empty");
+            }
+
+            Random random = new Random();
+            WebElement randomOption = options.get(random.nextInt(options.size()));
+            String optionValue = randomOption.getText();
+            randomOption.click();
+            LogUtils.info("Random dropdown option selected: " + optionValue);
+
+        } catch (Exception e) {
+            LogUtils.error("Failed to select a random dropdown option: " + e.getMessage());
+            Assert.fail("Error while selecting a random option from the dropdown list.");
         }
     }
 

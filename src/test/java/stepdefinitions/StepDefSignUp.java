@@ -2,6 +2,7 @@ package stepdefinitions;
 
 import hooks.TestContext;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
 import pages.CommonPage;
 import pages.DashboardPage;
 import pages.LoginPage;
@@ -29,5 +30,10 @@ public class StepDefSignUp {
         loginPage.goToSignUpPage();
         signUpPage.completeRegisterForANewAccount();
         signUpPage.completePersonalDetails();
+    }
+
+    @When("the user chooses and pays for the {string}")
+    public void theUserChoosesAndPaysForThe(String membership) {
+        signUpPage.chooseMembership(membership);
     }
 }
