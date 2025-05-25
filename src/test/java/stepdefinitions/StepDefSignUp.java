@@ -28,6 +28,6 @@ public class StepDefSignUp {
     public void aUserSuccessfullyRegistersForAnAccount() throws InterruptedException, IOException, UnsupportedFlavorException {
         loginPage.goToSignUpPage();
         signUpPage.completeRegisterForANewAccount();
-
+        signUpPage.completePersonalDetails();
     }
 }

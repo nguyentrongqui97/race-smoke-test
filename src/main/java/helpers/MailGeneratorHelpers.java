@@ -1,7 +1,5 @@
 package helpers;
 
-import constants.ConstantGlobal;
-import keywords.WebUI;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,14 +9,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.LogUtils;
 
 import java.awt.*;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.List;
-import java.awt.datatransfer.DataFlavor;
-import java.lang.reflect.Array;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,38 +23,104 @@ public class MailGeneratorHelpers {
     private WebDriver driver;
     private String mainTabHandle;
     private By consentButton = By.cssSelector("button.fc-cta-consent");
+    private String emailAddress;
 
     public MailGeneratorHelpers(WebDriver driver) {
         this.driver = driver;
         this.mainTabHandle = driver.getWindowHandle();
     }
 
-    public void openMailGeneratorTabAndCopyEmail(By copyButtonLocator) throws IOException, UnsupportedFlavorException {
+//    public void openMailGeneratorTabAndCopyEmail(By copyButtonLocator) throws IOException, UnsupportedFlavorException {
+//        ((JavascriptExecutor) driver).executeScript("window.open('https://10minutemail.net/', '_blank');");
+//
+//        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+//        driver.switchTo().window(tabs.get(tabs.size() - 1));
+//
+//        clickElement(consentButton);
+//        clickElement(copyButtonLocator);
+//
+//        String email = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+//        System.out.println("EMAIL: " + email);
+//
+//    }
+
+//    public void pasteEmailInMainTab(By inputEmailLocator) throws InterruptedException {
+//        driver.switchTo().window(mainTabHandle);
+//        Thread.sleep(5000);
+//        try {
+//            String email = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
+//            System.out.println("Email: " + email + " sent to " + inputEmailLocator);
+//            waitForElementVisible(inputEmailLocator);
+//            driver.findElement(inputEmailLocator).sendKeys(email);
+//        } catch (Exception e) {
+//            LogUtils.error("Cannot paste email to main tab " + e);
+//        }
+//    }
+
+
+//    public String openMailGeneratorTabAndCopyEmail(By emailFieldLocator) {
+//        ((JavascriptExecutor) driver).executeScript("window.open('https://10minutemail.net/', '_blank');");
+//
+//        ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
+//        driver.switchTo().window(tabs.get(tabs.size() - 1));
+//
+//        clickElement(consentButton);
+//
+//        // Get the value from the email field directly
+//        WebElement emailField = driver.findElement(emailFieldLocator);
+//        String email = emailField.getAttribute("value");
+//        System.out.println("EMAIL: " + email);
+//
+//        StringSelection selection = new StringSelection(email);
+//        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+//        clipboard.setContents(selection, null);
+//
+//        return email;
+//    }
+
+//    public void pasteEmailInMainTab(By inputEmailLocator, String email) throws InterruptedException {
+//        driver.switchTo().window(mainTabHandle);
+//        Thread.sleep(5000);
+//        try {
+//            System.out.println("Email: " + email + " sent to " + inputEmailLocator);
+//            waitForElementVisible(inputEmailLocator);
+//            driver.findElement(inputEmailLocator).sendKeys(email);
+//        } catch (Exception e) {
+//            LogUtils.error("Cannot paste email to main tab " + e);
+//        }
+//    }
+
+    public void openMailGeneratorTabAndCopyEmail(By emailFieldLocator) {
         ((JavascriptExecutor) driver).executeScript("window.open('https://10minutemail.net/', '_blank');");
 
         ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
         driver.switchTo().window(tabs.get(tabs.size() - 1));
 
         clickElement(consentButton);
-        clickElement(copyButtonLocator);
 
-        String email = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-        System.out.println("EMAIL: " + email);
+        WebElement emailField = driver.findElement(By.id("fe_text"));
+        emailAddress = emailField.getAttribute("value");
+        System.out.println("EMAIL: " + emailAddress);
 
+        StringSelection selection = new StringSelection(emailAddress);
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(selection, null);
     }
 
     public void pasteEmailInMainTab(By inputEmailLocator) throws InterruptedException {
         driver.switchTo().window(mainTabHandle);
         Thread.sleep(5000);
+
         try {
-            String email = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
-            System.out.println("Email: " + email + " sent to " + inputEmailLocator);
+            System.out.println("Email: " + emailAddress + " sent to " + inputEmailLocator);
             waitForElementVisible(inputEmailLocator);
-            driver.findElement(inputEmailLocator).sendKeys(email);
+            driver.findElement(inputEmailLocator).sendKeys(emailAddress);
         } catch (Exception e) {
             LogUtils.error("Cannot paste email to main tab " + e);
         }
     }
+
+
 
     public String getOTPFromMailTab() {
         // Switch to the mail tab
@@ -91,10 +152,11 @@ public class MailGeneratorHelpers {
                         if (matcher.find()) {
                             otp = matcher.group();
                         }
-                        return otp; // Done
+                        return otp;
                     }
-                }
 
+                }
+                System.out.println(otp);
                 driver.navigate().refresh();
                 Thread.sleep(5000);
 
@@ -109,4 +171,34 @@ public class MailGeneratorHelpers {
 
         throw new RuntimeException("OTP email did not arrive within 2 minutes.");
     }
+
+    public void enterOTPInMainTab(String otp) throws InterruptedException {
+        driver.switchTo().window(mainTabHandle);
+        Thread.sleep(2000);
+
+        try {
+            List<WebElement> otpInputs = driver.findElements(By.cssSelector("input.MuiInputBase-input.MuiOutlinedInput-input.css-1o64soc"));
+
+            if (otp.length() != 6 || otpInputs.size() < 6) {
+                throw new IllegalStateException("Mismatch between OTP length and input fields.");
+            }
+
+            // Click first input box to focus (optional)
+            otpInputs.get(0).click();
+
+            for (int i = 0; i < 6; i++) {
+                WebElement inputBox = otpInputs.get(i);
+                inputBox.clear();
+                inputBox.sendKeys(Character.toString(otp.charAt(i)));
+                Thread.sleep(100);
+            }
+
+            System.out.println("OTP entered successfully: " + otp);
+
+        } catch (Exception e) {
+            LogUtils.error("Failed to enter OTP: " + e.getMessage());
+        }
+    }
+
+
 }

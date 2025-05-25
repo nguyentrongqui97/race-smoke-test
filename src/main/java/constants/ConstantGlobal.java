@@ -29,5 +29,6 @@ public class ConstantGlobal {
     public static final String MAIL_GENERATOR_URL = PropertiesHelpers.getValue("MAIL_GENERATOR_URL");
     public static final String PASSWORD = PropertiesHelpers.getValue("PASSWORD");
     public static final String EMAIL_TARGET_SENDER = PropertiesHelpers.getValue("EMAIL_TARGET_SENDER");
+    public static final String DATA_FAKER_EN = PropertiesHelpers.getValue("DATA_FAKER_EN");
 
 }
