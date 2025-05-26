@@ -4,6 +4,8 @@ Feature: Sign-up
     Given a user successfully registers for an account
     When the user chooses and pays for the "<membership>"
     Examples:
-      | membership |
-      | Community  |
-
+      | membership     |
+      | Community      |
+      | Active         |
+      | Racer          |
+      | Ultimate Racer |

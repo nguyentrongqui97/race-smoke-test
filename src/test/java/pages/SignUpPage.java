@@ -1,5 +1,6 @@
 package pages;
 
+import constants.ConstantGlobal;
 import drivers.DriverManager;
 import helpers.DataFakerHelpers;
 import helpers.MailGeneratorHelpers;
@@ -23,6 +24,10 @@ import static keywords.WebUI.*;
 public class SignUpPage extends CommonPage {
     private WebDriver driver;
     String email;
+    private String firstNameData;
+    private String lastNameData;
+    Faker faker = new Faker();
+
 
     //Register username and password page
     static By emailTextBox = By.name("email");
@@ -55,6 +60,7 @@ public class SignUpPage extends CommonPage {
     static By genderIdentityDropdown = By.cssSelector("ul[role='listbox'] li");
     static By emailFieldLocator = By.id("fe_text");
     static By nextButton = By.cssSelector(".MuiButton-contained");
+    static By nextContinueToPaymentButton = By.cssSelector(".MuiButton-containedSecondary");
 
     //Membership page
     static By homeNation = By.cssSelector(".MuiInputBase-adornedStart");
@@ -62,9 +68,22 @@ public class SignUpPage extends CommonPage {
     static By region = By.cssSelector(".MuiInputBase-adornedStart");
     static By regionDropDown = By.cssSelector("ul[role='listbox'] li");
     static By communityPlan = By.cssSelector("div.MuiPaper-root:nth-child(2) > div:nth-child(1) > div:nth-child(1)");
+    static By activePlan = By.cssSelector("div.MuiPaper-root:nth-child(3) > div:nth-child(1) > div:nth-child(1)");
+    static By racerPlan = By.cssSelector("div.MuiPaper-root:nth-child(4) > div:nth-child(1) > div:nth-child(1)");
+    static By ultimateRacerPlan = By.cssSelector("div.MuiPaper-root:nth-child(5) > div:nth-child(1) > div:nth-child(1)");
     static By agreementRadioButton = By.cssSelector("input[type='checkbox']");
     static By creditDebitCardRadioButton = By.cssSelector("input[name='paymentMethod'][value='STRIPE']");
     static By directDebitRadioButton = By.cssSelector("input[name='paymentMethod'][value='GOCARDLESS']");
+
+    //Stripe
+    static By stripePaymentForm = By.cssSelector(".CheckoutPaymentForm");
+    static By stripeEmail = By.id("email");
+    static By stripeCardNumber = By.id("cardNumber");
+    static By stripeCardExpiry = By.id("cardExpiry");
+    static By stripeCardCvc = By.id("cardCvc");
+    static By stripeCardHolderName = By.id("billingName");
+    static By stripePayButton = By.xpath("//span[text()='Pay']");
+
 
     public void completeRegisterForANewAccount() throws InterruptedException, IOException, UnsupportedFlavorException {
         MailGeneratorHelpers helper = new MailGeneratorHelpers(DriverManager.getDriver());
@@ -81,11 +100,10 @@ public class SignUpPage extends CommonPage {
 
     public void completePersonalDetails() throws InterruptedException {
 
-        Faker faker = new Faker();
         Random random = new Random();
 
-        String firstNameData = faker.name().firstName();
-        String lastNameData = faker.name().lastName();
+        firstNameData = faker.name().firstName();
+        lastNameData = faker.name().lastName();
 
         LocalDate startDate = LocalDate.of(1950, 1, 1);
         long daysForParents = ChronoUnit.DAYS.between(startDate, LocalDate.of(2009, 12, 31));
@@ -126,6 +144,7 @@ public class SignUpPage extends CommonPage {
 
     public void chooseMembership(String membership) throws InterruptedException {
         Thread.sleep(5000);
+        String stripeEmailData = faker.internet().emailAddress();
         waitForElementClickable(homeNation, 5000);
         selectARandomOptionFromDropDown(homeNation, homeNationDropDown);
         selectARandomOptionFromDropDown(region, regionDropDown);
@@ -133,14 +152,58 @@ public class SignUpPage extends CommonPage {
             case "Community":
                 clickElement(communityPlan);
                 clickCheckBox(agreementRadioButton);
+                clickElement(nextButton, 2000);
                 break;
             case "Active":
-                System.out.println("Active");
+                clickElement(activePlan);
+                clickCheckBox(creditDebitCardRadioButton);
+                clickCheckBox(agreementRadioButton);
+                clickElement(nextContinueToPaymentButton);
+
+                //Stripe
+                waitForElementVisible(stripePaymentForm, 8000);
+                sendText(stripeEmail, stripeEmailData);
+                sendText(stripeCardNumber, STRIPE_CARD_NUMBER);
+                sendText(stripeCardExpiry, STRIPE_CARD_EXPIRY);
+                sendText(stripeCardCvc, STRIPE_CARD_CVC);
+                sendText(stripeCardHolderName, firstNameData + lastNameData);
+                waitForElementClickable(stripePayButton);
+                clickCheckBox(stripePayButton);
                 break;
+            case "Racer":
+                clickElement(racerPlan);
+                clickCheckBox(creditDebitCardRadioButton);
+                clickCheckBox(agreementRadioButton);
+                clickElement(nextContinueToPaymentButton);
+
+                //Stripe
+                waitForElementVisible(stripePaymentForm, 8000);
+                sendText(stripeEmail, stripeEmailData);
+                sendText(stripeCardNumber, STRIPE_CARD_NUMBER);
+                sendText(stripeCardExpiry, STRIPE_CARD_EXPIRY);
+                sendText(stripeCardCvc, STRIPE_CARD_CVC);
+                sendText(stripeCardHolderName, firstNameData + lastNameData);
+                waitForElementClickable(stripePayButton);
+                clickCheckBox(stripePayButton);
+            case "Ultimate Raver":
+                clickElement(ultimateRacerPlan);
+                clickCheckBox(creditDebitCardRadioButton);
+                clickCheckBox(agreementRadioButton);
+                clickElement(nextContinueToPaymentButton);
+
+                //Stripe
+                waitForElementVisible(stripePaymentForm, 8000);
+                sendText(stripeEmail, stripeEmailData);
+                sendText(stripeCardNumber, STRIPE_CARD_NUMBER);
+                sendText(stripeCardExpiry, STRIPE_CARD_EXPIRY);
+                sendText(stripeCardCvc, STRIPE_CARD_CVC);
+                sendText(stripeCardHolderName, firstNameData + lastNameData);
+                waitForElementClickable(stripePayButton);
+                clickCheckBox(stripePayButton);
             default:
                 System.out.println("default");
         }
-        clickElement(nextButton, 2000);
+
     }
 
 }
