@@ -33,7 +33,7 @@ public class StepDefSignUp {
     }
 
     @When("the user chooses and pays for the {string}")
-    public void theUserChoosesAndPaysForThe(String membership) {
+    public void theUserChoosesAndPaysForThe(String membership) throws InterruptedException {
         signUpPage.chooseMembership(membership);
     }
 }

@@ -9,7 +9,7 @@
 ##    And click the login button
 ##    Then the user shall be redirected to the Dashboard
 
-Feature: Log into BTF platform
+Feature: Log-in
 
   Scenario Outline: Successfully log into with "<membershipType>" user
     Given a user is on the login page

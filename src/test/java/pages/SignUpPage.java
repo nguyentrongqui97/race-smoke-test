@@ -33,7 +33,6 @@ public class SignUpPage extends CommonPage {
 
     //OTP page
     static By OTPPageTitle = By.cssSelector("span.MuiTypography-gutterBottom");
-    static By OTPboxes = By.cssSelector("#\\:r5\\:");
     static By verifyOTPButton = By.cssSelector("button.MuiButton-contained:nth-child(2)");
 
     //Personal details page
@@ -59,12 +58,13 @@ public class SignUpPage extends CommonPage {
 
     //Membership page
     static By homeNation = By.cssSelector(".MuiInputBase-adornedStart");
-    static By communityPlan = By.cssSelector("div.MuiPaper-root:nth-child(2) > div:nth-child(1) > div:nth-child(1)");
     static By homeNationDropDown = By.cssSelector("ul[role='listbox'] li");
-    static By agreementRadioButton = By.cssSelector("svg.css-q7mezt:nth-child(2)");
+    static By region = By.cssSelector(".MuiInputBase-adornedStart");
+    static By regionDropDown = By.cssSelector("ul[role='listbox'] li");
+    static By communityPlan = By.cssSelector("div.MuiPaper-root:nth-child(2) > div:nth-child(1) > div:nth-child(1)");
+    static By agreementRadioButton = By.cssSelector("input[type='checkbox']");
     static By creditDebitCardRadioButton = By.cssSelector("input[name='paymentMethod'][value='STRIPE']");
     static By directDebitRadioButton = By.cssSelector("input[name='paymentMethod'][value='GOCARDLESS']");
-
 
     public void completeRegisterForANewAccount() throws InterruptedException, IOException, UnsupportedFlavorException {
         MailGeneratorHelpers helper = new MailGeneratorHelpers(DriverManager.getDriver());
@@ -99,9 +99,10 @@ public class SignUpPage extends CommonPage {
 
         String cityData = faker.address().cityName();
         String postcodeData = faker.address().postcode();
-        String phoneNumberData = faker.numerify("071#######");
+        String phoneNumberData = faker.numerify("071########");
 
         //Type data to textboxes
+        Thread.sleep(5000);
         waitForElementVisible(firstName);
         sendText(firstName, firstNameData);
         sendText(lastName, lastNameData);
@@ -123,19 +124,23 @@ public class SignUpPage extends CommonPage {
 
     }
 
-    public void chooseMembership(String membership){
+    public void chooseMembership(String membership) throws InterruptedException {
+        Thread.sleep(5000);
+        waitForElementClickable(homeNation, 5000);
+        selectARandomOptionFromDropDown(homeNation, homeNationDropDown);
+        selectARandomOptionFromDropDown(region, regionDropDown);
         switch (membership) {
             case "Community":
-                selectARandomOptionFromDropDown(homeNation, homeNationDropDown);
                 clickElement(communityPlan);
-                clickElement(agreementRadioButton);
+                clickCheckBox(agreementRadioButton);
                 break;
             case "Active":
-                System.out.println("hehe");
+                System.out.println("Active");
                 break;
             default:
                 System.out.println("default");
         }
+        clickElement(nextButton, 2000);
     }
 
 }

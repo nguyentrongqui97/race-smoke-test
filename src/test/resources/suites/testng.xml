@@ -2,7 +2,8 @@
 <suite name="All Test Suites">
     <test name="Run All Test Runers">
         <classes>
-            <class name="runners.TestRunner" />
+            <class name="runners.TestRunnerLogin" />
+            <class name="runners.TestRunnerSignUp" />
         </classes>
     </test>
 </suite>

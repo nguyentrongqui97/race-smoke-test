@@ -208,13 +208,13 @@
                 <configuration>
                     <!-- Run all Test Runner files containing name as TestRunner -->
                     <includes>
-                        <include>**/TestRunner*.java</include>
+<!--                        <include>**/TestRunner*.java</include>-->
                     </includes>
 
-                    <!-- Run xml file -->
-                    <!--                    <suiteXmlFiles>-->
-                    <!--                        <suiteXmlFile>src/test/resources/suites/testng.xml</suiteXmlFile>-->
-                    <!--                    </suiteXmlFiles>-->
+<!--                     Run xml file -->
+                                        <suiteXmlFiles>
+                                            <suiteXmlFile>src/test/resources/suites/testng.xml</suiteXmlFile>
+                                        </suiteXmlFiles>
 
                     <testFailureIgnore>true</testFailureIgnore>
 

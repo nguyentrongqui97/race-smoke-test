@@ -211,7 +211,7 @@ public class MailGeneratorHelpers {
 
         String targetSender = "no-reply@verificationemail.com";
 
-        while (System.currentTimeMillis() - startTime < 120000) {
+        while (System.currentTimeMillis() - startTime < 180000) {
             try {
                 List<WebElement> rows = driver.findElements(By.cssSelector("#maillist tr"));
 

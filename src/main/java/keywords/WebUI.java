@@ -14,6 +14,7 @@ import utils.LogUtils;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class WebUI {
 
@@ -353,13 +354,21 @@ public class WebUI {
 
             List<WebElement> options = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(optionsLocator));
 
-            if(options.isEmpty()){
-                LogUtils.error("No dropdown options found for locator: " + optionsLocator);
-                Assert.fail("Dropdown options list is empty");
+            // Filter out unselectable options
+            List<WebElement> clickableOptions = options.stream()
+                    .filter(option -> {
+                        String text = option.getText().trim();
+                        return !text.equalsIgnoreCase("Select an option") && option.isEnabled();
+                    })
+                    .collect(Collectors.toList());
+
+            if (clickableOptions.isEmpty()) {
+                LogUtils.error("No clickable dropdown options available for locator: " + optionsLocator);
+                Assert.fail("No valid dropdown options to select.");
             }
 
             Random random = new Random();
-            WebElement randomOption = options.get(random.nextInt(options.size()));
+            WebElement randomOption = clickableOptions.get(random.nextInt(clickableOptions.size()));
             String optionValue = randomOption.getText();
             randomOption.click();
             LogUtils.info("Random dropdown option selected: " + optionValue);
@@ -367,6 +376,21 @@ public class WebUI {
         } catch (Exception e) {
             LogUtils.error("Failed to select a random dropdown option: " + e.getMessage());
             Assert.fail("Error while selecting a random option from the dropdown list.");
+        }
+    }
+
+    public static void clickCheckBox(By by) {
+        waitForPageLoaded();
+        WebElement checkbox = getWebElement(by);
+        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
+        js.executeScript("arguments[0].click();", checkbox);
+        try {
+            if (!checkbox.isSelected()) {
+                checkbox.click();
+            }
+        } catch (Throwable error) {
+            LogUtils.error("Cannot tick the checkbox: " + by.toString());
+            Assert.fail("Cannot tick the checkbox: " + by);
         }
     }
 
