@@ -286,6 +286,24 @@ public class WebUI {
         LogUtils.info("Click element: " + by);
     }
 
+    public static void clickElementWithJS(By by) {
+        waitForPageLoaded();
+        waitForElementClickable(by);
+        WebElement element = DriverManager.getDriver().findElement(by);
+        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
+        js.executeScript("arguments[0].click();", element);
+        LogUtils.info("Click element: " + by);
+    }
+
+    public static void clickElementWithJS(By by, int timeOut) {
+        waitForPageLoaded();
+        waitForElementClickable(by, timeOut);
+        WebElement element = DriverManager.getDriver().findElement(by);
+        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
+        js.executeScript("arguments[0].click();", element);
+        LogUtils.info("Click element: " + by);
+    }
+
     public static void sendText(By by, String value) {
         waitForPageLoaded();
         waitForElementVisible(by);
@@ -323,6 +341,13 @@ public class WebUI {
     public static void assertTextEqual(By by, String expectedText){
         waitForPageLoaded();
         waitForElementVisible(by);
+        String actualText = getWebElement(by).getText().trim();
+        Assert.assertEquals(actualText, expectedText, "Text does not match for locator: " + by.toString());
+    }
+
+    public static void assertTextEqual(By by, String expectedText, int timeOut){
+        waitForPageLoaded();
+        waitForElementVisible(by, timeOut);
         String actualText = getWebElement(by).getText().trim();
         Assert.assertEquals(actualText, expectedText, "Text does not match for locator: " + by.toString());
     }
