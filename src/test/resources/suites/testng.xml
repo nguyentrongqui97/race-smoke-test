@@ -2,8 +2,9 @@
 <suite name="All Test Suites">
     <test name="Run All Test Runers">
         <classes>
-            <class name="runners.TestRunnerLogin" />
-            <class name="runners.TestRunnerSignUp" />
+            <class name="runners.TestRunnerLogin"/>
+            <class name="runners.TestRunnerSignUpCreditDebit"/>
+            <class name="runners.TestRunnerSignUpDirectDebit"/>
         </classes>
     </test>
 </suite>

@@ -162,6 +162,34 @@ public class WebUI {
         }
     }
 
+    public static void waitForElementVisibleAndAppearExpectedText(By by, String expectedText) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(EXPLICIT_TIMEOUT),
+                    Duration.ofMillis(500));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+            wait.until(ExpectedConditions.textToBe(by, expectedText));
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for the expected text: " + expectedText);
+            Assert.fail("Time out waiting for the expected text: " + expectedText);
+        }
+    }
+
+    public static void waitForElementVisibleAndAppearExpectedText(By by, String expectedText, int timeOut) {
+        try {
+            WebDriverWait wait = new WebDriverWait(
+                    DriverManager.getDriver(),
+                    Duration.ofSeconds(timeOut),
+                    Duration.ofMillis(500));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+            wait.until(ExpectedConditions.textToBe(by, expectedText));
+        } catch (Throwable error) {
+            LogUtils.error("Time out waiting for the expected text: " + expectedText);
+            Assert.fail("Time out waiting for the expected text: " + expectedText);
+        }
+    }
+
     public static void waitForElementNotVisible(By by) {
         try {
             WebDriverWait wait = new WebDriverWait(
@@ -264,8 +292,6 @@ public class WebUI {
         }
     }
 
-
-
     public static void openURL(String url) {
         DriverManager.getDriver().get(url);
         LogUtils.info("Open URL: " + url);
@@ -343,6 +369,20 @@ public class WebUI {
         waitForElementVisible(by);
         String actualText = getWebElement(by).getText().trim();
         Assert.assertEquals(actualText, expectedText, "Text does not match for locator: " + by.toString());
+    }
+
+    public static void waitForExpectedTextThenAssertActualTextEqual(By by, String expectedText){
+        waitForPageLoaded();
+        waitForElementVisibleAndAppearExpectedText(by, expectedText);
+        String actualText = getWebElement(by).getText().trim();
+        Assert.assertEquals(actualText, expectedText, "Text does not match. Actual text: " + actualText + " - Expected text: " + expectedText);
+    }
+
+    public static void waitForExpectedTextThenAssertActualTextEqual(By by, String expectedText, int timeOut){
+        waitForPageLoaded();
+        waitForElementVisibleAndAppearExpectedText(by, expectedText, timeOut);
+        String actualText = getWebElement(by).getText().trim();
+        Assert.assertEquals(actualText, expectedText, "Text does not match. Actual text: " + actualText + " - Expected text: " + expectedText);
     }
 
     public static void assertTextEqual(By by, String expectedText, int timeOut){

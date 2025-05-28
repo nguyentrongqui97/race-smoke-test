@@ -122,7 +122,6 @@ public class MailGeneratorHelpers {
     }
 
 
-
     public String getOTPFromMailTab() {
         // Switch to the mail tab
         ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
@@ -134,7 +133,7 @@ public class MailGeneratorHelpers {
         String targetSender = "no-reply@verificationemail.com";
         String otp = null;
 
-        while (System.currentTimeMillis() - startTime < 120000) {
+        while (System.currentTimeMillis() - startTime < 180000) {
             try {
                 List<WebElement> rows = driver.findElements(By.cssSelector("#maillist tr"));
 
@@ -200,7 +199,6 @@ public class MailGeneratorHelpers {
         }
     }
 
-    // NEW NEW NEW
     public void getOTPFromMailTabAndCopyToClipboard() {
         // Switch to the mail tab
         ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
@@ -211,7 +209,7 @@ public class MailGeneratorHelpers {
 
         String targetSender = "no-reply@verificationemail.com";
 
-        while (System.currentTimeMillis() - startTime < 180000) {
+        while (System.currentTimeMillis() - startTime < 300000) {
             try {
                 List<WebElement> rows = driver.findElements(By.cssSelector("#maillist tr"));
 

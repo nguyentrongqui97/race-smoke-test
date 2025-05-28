@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
+import utils.DataGenerateUtils;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
@@ -23,18 +24,23 @@ import static keywords.WebUI.*;
 
 public class SignUpPage extends CommonPage {
     private WebDriver driver;
-    String email;
     private String firstNameData;
     private String lastNameData;
-    Faker faker = new Faker();
-
+    private String addressLine1Data;
+    private String addressLine2Data;
+    private String postcodeData;
+    private String phoneNumberData;
+    private String cityData;
+    private String paymentEmailData;
+    private String dayData;
+    private String monthData;
+    private String yearData;
 
     //Register username and password page
     static By emailTextBox = By.name("email");
     static By passwordTextBox = By.name("password");
     static By confirmPasswordTextBox = By.name("confirmPassword");
     static By getStartedButton = By.cssSelector("button.MuiButton-contained:nth-child(1)");
-    static By copyButtonLocator = By.id("copy-button");
 
     //OTP page
     static By OTPPageTitle = By.cssSelector("span.MuiTypography-gutterBottom");
@@ -84,8 +90,27 @@ public class SignUpPage extends CommonPage {
     static By stripeCardHolderName = By.id("billingName");
     static By stripePayButton = By.xpath("//span[text()='Pay']");
 
+    //Direct Debit
+    static By goCardLessPaymentForm = By.cssSelector(".css-111f2z0");
+    static By goCardlessFirstname = By.id("given_name");
+    static By goCardlessLastname = By.id("family_name");
+    static By goCardlessEmail = By.id("email");
+    static By goCardLessEnterAddressManuallyButton = By.cssSelector("button.fs-unmask:nth-child(10)");
+    static By goCardlessBillingAddressLine1 = By.id("address_line1");
+    static By goCardlessCity = By.id("city");
+    static By goCardLessPostcode = By.id("postal_code");
+    static By goCardlessContinueButton = By.cssSelector("button.fs-unmask:nth-child(1)");
+    static By goCardlessSelectBankForm = By.cssSelector(".css-2lftss > div:nth-child(1)");
+    static By goCardlessSelectBankSuccessOption = By.cssSelector("li.css-0:nth-child(4) > button:nth-child(1)");
+    static By goCardlessSetUpThisDirectDebitButton = By.cssSelector(".css-m12kbt");
+    static By goCardlessContinueToManualWebLoginButton = By.cssSelector(".css-10qg4zc");
 
-    public void completeRegisterForANewAccount() throws InterruptedException, IOException, UnsupportedFlavorException {
+
+    //After payment
+    static By paymentSuccessStatus = By.cssSelector("h4.MuiTypography-root");
+    static By skipButton = By.cssSelector(".MuiButton-outlined");
+
+    public void completeRegisterForANewAccount() throws InterruptedException {
         MailGeneratorHelpers helper = new MailGeneratorHelpers(DriverManager.getDriver());
         helper.openMailGeneratorTabAndCopyEmail(emailFieldLocator);
         helper.pasteEmailInMainTab(emailTextBox);
@@ -100,24 +125,16 @@ public class SignUpPage extends CommonPage {
 
     public void completePersonalDetails() throws InterruptedException {
 
-        Random random = new Random();
-
-        firstNameData = faker.name().firstName();
-        lastNameData = faker.name().lastName();
-
-        LocalDate startDate = LocalDate.of(1950, 1, 1);
-        long daysForParents = ChronoUnit.DAYS.between(startDate, LocalDate.of(2009, 12, 31));
-        LocalDate randomDate = startDate.plusDays(random.nextInt((int) daysForParents + 1));
-        String dayData = String.valueOf(randomDate.getDayOfMonth());
-        String monthData = String.valueOf(randomDate.getMonthValue());
-        String yearData = String.valueOf(randomDate.getYear());
-
-        String addressLine1Data = faker.address().streetAddress();
-        String addressLine2Data = faker.address().secondaryAddress();
-
-        String cityData = faker.address().cityName();
-        String postcodeData = faker.address().postcode();
-        String phoneNumberData = faker.numerify("071########");
+        firstNameData = DataGenerateUtils.generateFullNameData();
+        lastNameData = DataGenerateUtils.generateLastNameData();
+        addressLine1Data = DataGenerateUtils.generateAddressLine1Data();
+        addressLine2Data = DataGenerateUtils.generateAddressLine2Data();
+        postcodeData = DataGenerateUtils.generatePostCodeData();
+        phoneNumberData = DataGenerateUtils.generatePhoneNumberData();
+        cityData = DataGenerateUtils.generateCityData();
+        dayData = DataGenerateUtils.generateDayData();
+        monthData = DataGenerateUtils.generateMonthData();
+        yearData = DataGenerateUtils.generateYearData();
 
         //Type data to textboxes
         Thread.sleep(5000);
@@ -139,12 +156,14 @@ public class SignUpPage extends CommonPage {
         selectARandomOptionFromDropDown(sexAtBirth, sexAtBirthDropDown);
         selectARandomOptionFromDropDown(genderIdentity, genderIdentityDropdown);
         clickElement(nextButton);
-
     }
 
-    public void chooseMembership(String membership) throws InterruptedException {
+    public void chooseMembership(String membership, String paymentMethod) throws InterruptedException {
+
+        paymentEmailData = DataGenerateUtils.generatePaymentEmailAddressData();
+        postcodeData = DataGenerateUtils.generatePostCodeData();
+
         Thread.sleep(5000);
-        String stripeEmailData = faker.internet().emailAddress();
         waitForElementClickable(homeNation, 5000);
         selectARandomOptionFromDropDown(homeNation, homeNationDropDown);
         selectARandomOptionFromDropDown(region, regionDropDown);
@@ -156,54 +175,58 @@ public class SignUpPage extends CommonPage {
                 break;
             case "Active":
                 clickElement(activePlan);
-                clickCheckBox(creditDebitCardRadioButton);
-                clickCheckBox(agreementRadioButton);
-                clickElement(nextContinueToPaymentButton);
-
-                //Stripe
-                waitForElementVisible(stripePaymentForm, 8000);
-                sendText(stripeEmail, stripeEmailData);
-                sendText(stripeCardNumber, STRIPE_CARD_NUMBER);
-                sendText(stripeCardExpiry, STRIPE_CARD_EXPIRY);
-                sendText(stripeCardCvc, STRIPE_CARD_CVC);
-                sendText(stripeCardHolderName, firstNameData + lastNameData);
-                waitForElementClickable(stripePayButton);
-                clickCheckBox(stripePayButton);
                 break;
             case "Racer":
                 clickElement(racerPlan);
-                clickCheckBox(creditDebitCardRadioButton);
-                clickCheckBox(agreementRadioButton);
-                clickElement(nextContinueToPaymentButton);
-
-                //Stripe
-                waitForElementVisible(stripePaymentForm, 8000);
-                sendText(stripeEmail, stripeEmailData);
-                sendText(stripeCardNumber, STRIPE_CARD_NUMBER);
-                sendText(stripeCardExpiry, STRIPE_CARD_EXPIRY);
-                sendText(stripeCardCvc, STRIPE_CARD_CVC);
-                sendText(stripeCardHolderName, firstNameData + lastNameData);
-                waitForElementClickable(stripePayButton);
-                clickCheckBox(stripePayButton);
-            case "Ultimate Raver":
+                break;
+            case "Ultimate Racer":
                 clickElement(ultimateRacerPlan);
-                clickCheckBox(creditDebitCardRadioButton);
-                clickCheckBox(agreementRadioButton);
-                clickElement(nextContinueToPaymentButton);
-
-                //Stripe
-                waitForElementVisible(stripePaymentForm, 8000);
-                sendText(stripeEmail, stripeEmailData);
-                sendText(stripeCardNumber, STRIPE_CARD_NUMBER);
-                sendText(stripeCardExpiry, STRIPE_CARD_EXPIRY);
-                sendText(stripeCardCvc, STRIPE_CARD_CVC);
-                sendText(stripeCardHolderName, firstNameData + lastNameData);
-                waitForElementClickable(stripePayButton);
-                clickCheckBox(stripePayButton);
-            default:
-                System.out.println("default");
+                break;
         }
 
+        switch (paymentMethod) {
+            case "Credit-Debit":
+                clickCheckBox(creditDebitCardRadioButton);
+                clickCheckBox(agreementRadioButton);
+                clickElement(nextContinueToPaymentButton);
+
+                //Stripe
+                waitForElementVisible(stripePaymentForm, 8000);
+                sendText(stripeEmail, paymentEmailData);
+                sendText(stripeCardNumber, STRIPE_CARD_NUMBER);
+                sendText(stripeCardExpiry, STRIPE_CARD_EXPIRY);
+                sendText(stripeCardCvc, STRIPE_CARD_CVC);
+                sendText(stripeCardHolderName, firstNameData + lastNameData);
+                clickElementWithJS(stripePayButton);
+                break;
+            case "Direct Debit":
+                clickCheckBox(directDebitRadioButton);
+                clickCheckBox(agreementRadioButton);
+                clickElement(nextContinueToPaymentButton);
+
+                //GoCardless
+                waitForElementVisible(goCardLessPaymentForm, 60);
+                sendText(goCardlessFirstname, firstNameData);
+                sendText(goCardlessLastname, lastNameData);
+                sendText(goCardlessEmail, paymentEmailData);
+                clickElement(goCardLessEnterAddressManuallyButton);
+                sendText(goCardlessBillingAddressLine1, addressLine1Data);
+                sendText(goCardlessCity, cityData);
+                sendText(goCardLessPostcode, postcodeData);
+                clickElement(goCardlessContinueButton);
+                waitForElementVisible(goCardlessSelectBankForm);
+                clickElementWithJS(goCardlessSelectBankSuccessOption);
+                clickElementWithJS(goCardlessSetUpThisDirectDebitButton);
+                clickElementWithJS(goCardlessContinueToManualWebLoginButton);
+                break;
+        }
     }
 
+
+    public void successfullySignUpForANewAccount(String membership) {
+        waitForTextVisible(paymentSuccessStatus, 60);
+        assertTextEqual(paymentSuccessStatus, "Payment successful");
+        clickElement(nextButton);
+        clickElement(skipButton);
+    }
 }

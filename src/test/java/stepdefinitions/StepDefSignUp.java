@@ -2,6 +2,7 @@ package stepdefinitions;
 
 import hooks.TestContext;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import pages.CommonPage;
 import pages.DashboardPage;
@@ -32,8 +33,14 @@ public class StepDefSignUp {
         signUpPage.completePersonalDetails();
     }
 
-    @When("the user chooses and pays for the {string}")
-    public void theUserChoosesAndPaysForThe(String membership) throws InterruptedException {
-        signUpPage.chooseMembership(membership);
+    @Then("the user successfully signs up for a new {string} account")
+    public void theUserSuccessfullySignsUpForANewAccount(String membership) {
+        signUpPage.successfullySignUpForANewAccount(membership);
+        dashboardPage.verifyCorrectMembershipType(membership);
+    }
+
+    @When("the user chooses and pays for the {string} via {string}")
+    public void theUserChoosesAndPaysForTheVia(String membership, String paymentMethod) throws InterruptedException {
+        signUpPage.chooseMembership(membership, paymentMethod);
     }
 }
