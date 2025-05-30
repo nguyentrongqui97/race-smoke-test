@@ -9,7 +9,8 @@ import org.testng.annotations.Test;
         glue = {"stepdefinitions", "hooks"},
         plugin = {"pretty",
                 "html:target/cucumber-reports/Login.html",
-                "json:target/cucumber-reports/Login.json"}
+                "json:target/cucumber-reports/Login.json"},
+        tags = "@SMOKE"
 )
 
 @Test

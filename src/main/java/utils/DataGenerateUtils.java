@@ -61,6 +61,15 @@ public class DataGenerateUtils {
         return String.valueOf(randomDate.getYear());
     }
 
+    public static String generateYearForJuniorData() {
+        Random random = new Random();
+        LocalDate startDate = LocalDate.of(2010, 1, 1);
+        LocalDate endDate = LocalDate.of(2025, 12, 31);
+        long totalDays = ChronoUnit.DAYS.between(startDate, endDate);
+        LocalDate randomDate = startDate.plusDays(random.nextInt((int) totalDays + 1));
+        return String.valueOf(randomDate.getYear());
+    }
+
     public static String generatePaymentEmailAddressData() {
         return DataFakerHelpers.generateDataFaker().internet().emailAddress();
     }

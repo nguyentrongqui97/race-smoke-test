@@ -9,7 +9,8 @@ import org.testng.annotations.Test;
         glue = {"stepdefinitions", "hooks"},
         plugin = {"pretty",
                 "html:target/cucumber-reports/Sign_Up_Pay_Via_Credit_Debit.html",
-                "json:target/cucumber-reports/Sign_Up_Pay_Via_Credit_Debit.json"}
+                "json:target/cucumber-reports/Sign_Up_Pay_Via_Credit_Debit.json"},
+        tags = "@SMOKE"
 )
 
 @Test

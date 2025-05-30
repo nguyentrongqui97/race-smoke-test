@@ -5,6 +5,7 @@
             <class name="runners.TestRunnerLogin"/>
             <class name="runners.TestRunnerSignUpCreditDebit"/>
             <class name="runners.TestRunnerSignUpDirectDebit"/>
+            <class name="runners.TestRunnerAddJuniorProfile"/>
         </classes>
     </test>
 </suite>

@@ -190,6 +190,10 @@ public class WebUI {
         }
     }
 
+    public static void refreshPage() {
+        DriverManager.getDriver().navigate().refresh();
+    }
+
     public static void waitForElementNotVisible(By by) {
         try {
             WebDriverWait wait = new WebDriverWait(
@@ -317,6 +321,7 @@ public class WebUI {
         waitForElementClickable(by);
         WebElement element = DriverManager.getDriver().findElement(by);
         JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
         js.executeScript("arguments[0].click();", element);
         LogUtils.info("Click element: " + by);
     }
@@ -326,6 +331,7 @@ public class WebUI {
         waitForElementClickable(by, timeOut);
         WebElement element = DriverManager.getDriver().findElement(by);
         JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
         js.executeScript("arguments[0].click();", element);
         LogUtils.info("Click element: " + by);
     }
@@ -364,38 +370,38 @@ public class WebUI {
         Assert.assertEquals(expectedUrl, currentUrl, "Current  found is not as expected.");
     }
 
-    public static void assertTextEqual(By by, String expectedText){
+    public static void assertTextEqual(By by, String expectedText) {
         waitForPageLoaded();
         waitForElementVisible(by);
         String actualText = getWebElement(by).getText().trim();
         Assert.assertEquals(actualText, expectedText, "Text does not match for locator: " + by.toString());
     }
 
-    public static void waitForExpectedTextThenAssertActualTextEqual(By by, String expectedText){
+    public static void waitForExpectedTextThenAssertActualTextEqual(By by, String expectedText) {
         waitForPageLoaded();
         waitForElementVisibleAndAppearExpectedText(by, expectedText);
         String actualText = getWebElement(by).getText().trim();
         Assert.assertEquals(actualText, expectedText, "Text does not match. Actual text: " + actualText + " - Expected text: " + expectedText);
     }
 
-    public static void waitForExpectedTextThenAssertActualTextEqual(By by, String expectedText, int timeOut){
+    public static void waitForExpectedTextThenAssertActualTextEqual(By by, String expectedText, int timeOut) {
         waitForPageLoaded();
         waitForElementVisibleAndAppearExpectedText(by, expectedText, timeOut);
         String actualText = getWebElement(by).getText().trim();
         Assert.assertEquals(actualText, expectedText, "Text does not match. Actual text: " + actualText + " - Expected text: " + expectedText);
     }
 
-    public static void assertTextEqual(By by, String expectedText, int timeOut){
+    public static void assertTextEqual(By by, String expectedText, int timeOut) {
         waitForPageLoaded();
         waitForElementVisible(by, timeOut);
         String actualText = getWebElement(by).getText().trim();
         Assert.assertEquals(actualText, expectedText, "Text does not match for locator: " + by.toString());
     }
 
-    public static void assertUrlEqual(String expectedUrl){
+    public static void assertUrlEqual(String expectedUrl) {
         waitForPageLoaded();
         String actualUrl = DriverManager.getDriver().getCurrentUrl();
-        Assert.assertEquals(actualUrl, expectedUrl,"Current URL: " + actualUrl + "does not match the expected URL: " + expectedUrl);
+        Assert.assertEquals(actualUrl, expectedUrl, "Current URL: " + actualUrl + "does not match the expected URL: " + expectedUrl);
     }
 
     public static void sleep(double second) {
@@ -406,7 +412,7 @@ public class WebUI {
         }
     }
 
-    public static void selectARandomOptionFromDropDown(By dropdownLocator, By optionsLocator){
+    public static void selectARandomOptionFromDropDown(By dropdownLocator, By optionsLocator) {
         try {
             WebDriver driver = DriverManager.getDriver();
             WebDriverWait wait = new WebDriverWait(
@@ -456,6 +462,30 @@ public class WebUI {
         } catch (Throwable error) {
             LogUtils.error("Cannot tick the checkbox: " + by.toString());
             Assert.fail("Cannot tick the checkbox: " + by);
+        }
+    }
+
+    public static void clickFirstListItem(By by) {
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        List<WebElement> listItems = DriverManager.getDriver().findElements(by);
+
+        if (!listItems.isEmpty()) {
+            listItems.get(0).click();
+        } else {
+            System.out.println("No list items found.");
+        }
+    }
+
+    public static void clickFirstListItem(By by, int timeOut) {
+        waitForPageLoaded();
+        waitForElementVisible(by, timeOut);
+        List<WebElement> listItems = DriverManager.getDriver().findElements(by);
+
+        if (!listItems.isEmpty()) {
+            listItems.get(0).click();
+        } else {
+            System.out.println("No list items found.");
         }
     }
 

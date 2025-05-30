@@ -26,6 +26,7 @@ public class ConstantGlobal {
     public final static String LOCATE = PropertiesHelpers.getValue("LOCATE");
     public static final String CHROME_BINARY_PATH = PropertiesHelpers.getValue("CHROME_BROWSER_BINARY");
     public static final String URL_DASHBOARD = PropertiesHelpers.getValue("URL_DASHBOARD");
+    public static final String URL_ADD_JUNIOR_PROFILE = PropertiesHelpers.getValue("URL_ADD_JUNIOR_PROFILE");
     public static final String MAIL_GENERATOR_URL = PropertiesHelpers.getValue("MAIL_GENERATOR_URL");
     public static final String PASSWORD = PropertiesHelpers.getValue("PASSWORD");
     public static final String EMAIL_TARGET_SENDER = PropertiesHelpers.getValue("EMAIL_TARGET_SENDER");

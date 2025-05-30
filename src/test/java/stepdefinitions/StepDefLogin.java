@@ -39,6 +39,7 @@ public class StepDefLogin {
 
     @Then("the user should be logged into successfully as a {string} member")
     public void theUserShouldBeLoggedInSuccessfullyAsAMember(String membershipType) {
+        loginPage.selectProfileToSignIn();
         dashboardPage.verifyCorrectMembershipType(membershipType);
     }
 }

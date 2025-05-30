@@ -2,10 +2,7 @@ package hooks;
 
 import drivers.DriverManager;
 import org.openqa.selenium.WebDriver;
-import pages.CommonPage;
-import pages.DashboardPage;
-import pages.LoginPage;
-import pages.SignUpPage;
+import pages.*;
 
 public class TestContext {
 
@@ -13,6 +10,7 @@ public class TestContext {
     private LoginPage loginPage;
     private DashboardPage dashBoardPage;
     private SignUpPage signUpPage;
+    private AccountManagerPage accountManagerPage;
 
     public TestContext() {
 //        ThreadGuard.protect(new DriverFactory().createDriver());
@@ -45,6 +43,13 @@ public class TestContext {
             signUpPage = new SignUpPage();
         }
         return signUpPage;
+    }
+
+    public AccountManagerPage getAccountManagerPage(){
+        if (accountManagerPage == null) {
+            accountManagerPage = new AccountManagerPage();
+        }
+        return accountManagerPage;
     }
 
     public WebDriver getDriver() {

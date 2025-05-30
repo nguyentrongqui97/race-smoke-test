@@ -16,9 +16,8 @@ public class PropertiesHelpers {
     public static Properties loadAllFiles() {
         LinkedList<String> files = new LinkedList<>();
 
-        // Add tất cả file Properties vào đây theo mẫu
         files.add("src/test/resources/configs.properties");
-
+        files.add("src/test/resources/configs_system_values.properties");
         try {
             properties = new Properties();
 
@@ -32,7 +31,7 @@ public class PropertiesHelpers {
             System.out.println("Load all file properties successfully.");
             return properties;
         } catch (IOException ioe) {
-            System.out.println("Không load được properties file. Khởi tạo Properties Null.");
+            System.out.println("Cannot load properties files. Initiate Properties Null.");
             return new Properties();
         }
     }

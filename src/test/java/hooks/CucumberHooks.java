@@ -35,12 +35,6 @@ public class CucumberHooks {
 
     }
 
-    @BeforeStep
-    public void beforeStep() {
-        System.out.println("================ beforeStep ================");
-
-    }
-
     @AfterStep
     public void afterStep(Scenario scenario) {
         System.out.println("================ afterStep ================");

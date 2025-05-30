@@ -11,9 +11,10 @@ public class LoginPage extends CommonPage {
     private By loginButton = By.cssSelector("button.MuiButtonBase-root:nth-child(8)");
     private By signInButton = By.cssSelector("button.MuiButton-contained:nth-child(3)");
     private By createAnAccountHereLink = By.cssSelector("p.MuiTypography-root:nth-child(5) > a:nth-child(1)");
+    private By profileFirstListItem = By.cssSelector("div.MuiGrid2-root.css-fiq9q0");
 
 
-    public void goToLoginPage(){
+    public void goToLoginPage() {
         openURL(ConstantGlobal.URL);
         clickElement(loginButton);
     }
@@ -32,12 +33,16 @@ public class LoginPage extends CommonPage {
         sendText(password, passwordInput);
     }
 
-    public void clickSignInButton(){
+    public void clickSignInButton() {
         clickElement(signInButton);
     }
 
     public void clickLoginButton() {
         clickElement(loginButton);
+    }
+
+    public void selectProfileToSignIn() {
+        clickFirstListItem(profileFirstListItem, 20);
     }
 
 }
