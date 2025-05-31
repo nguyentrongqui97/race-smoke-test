@@ -7,9 +7,14 @@ import static keywords.WebUI.*;
 
 public class DashboardPage extends CommonPage {
     private By membershipType = By.cssSelector(".css-v0ctg1 > div:nth-child(2) > div:nth-child(1) > h2:nth-child(1)");
+    private By viewMyProfileButton = By.cssSelector(".css-vdcnv0");
 
     public void verifyCorrectMembershipType(String expectedMembershipType){
         waitForExpectedTextThenAssertActualTextEqual(membershipType, expectedMembershipType, 60);
+    }
+
+    public void clickViewMyProfile(){
+        clickElement(viewMyProfileButton);
     }
 
 }
