@@ -11,6 +11,8 @@ public class TestContext {
     private DashboardPage dashBoardPage;
     private SignUpPage signUpPage;
     private AccountManagerPage accountManagerPage;
+    private MyProfilePage myProfilePage;
+
 
     public TestContext() {
 //        ThreadGuard.protect(new DriverFactory().createDriver());
@@ -50,6 +52,13 @@ public class TestContext {
             accountManagerPage = new AccountManagerPage();
         }
         return accountManagerPage;
+    }
+
+    public MyProfilePage getMyProfilePage(){
+        if (myProfilePage == null) {
+            myProfilePage = new MyProfilePage();
+        }
+        return myProfilePage;
     }
 
     public WebDriver getDriver() {

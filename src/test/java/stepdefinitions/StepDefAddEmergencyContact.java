@@ -12,6 +12,7 @@ public class StepDefAddEmergencyContact {
     AccountManagerPage accountManagerPage;
     CommonPage commonPage;
     SignUpPage signUpPage;
+    MyProfilePage myProfilePage;
 
     public StepDefAddEmergencyContact(TestContext testContext) {
         loginPage = testContext.getLoginPage();
@@ -19,17 +20,18 @@ public class StepDefAddEmergencyContact {
         accountManagerPage = testContext.getAccountManagerPage();
         commonPage = testContext.getCommonPage();
         signUpPage = testContext.getSignUpPage();
+        myProfilePage = testContext.getMyProfilePage();
     }
 
     @When("the user adds information for {string} emergency contact")
-    public void theUserAddsInformationForEmergencyContact(int number) {
+    public void theUserAddsInformationForEmergencyContact(String number) {
         dashboardPage.clickViewMyProfile();
-
+        myProfilePage.addEmergencyContact(number);
     }
+
 
     @Then("{string} emergency contact shall be successfully added")
-    public void emergencyContactShallBeSuccessfullyAdded(int number) {
+    public void emergencyContactShallBeSuccessfullyAdded(String number) {
+        myProfilePage.emergencyContactSuccessfullyAdded(number);
     }
-
-
 }

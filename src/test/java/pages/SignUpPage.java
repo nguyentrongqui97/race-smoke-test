@@ -160,7 +160,7 @@ public class SignUpPage extends CommonPage {
 
     public void chooseMembership(String membership, String paymentMethod) throws InterruptedException {
 
-        paymentEmailData = DataGenerateUtils.generatePaymentEmailAddressData();
+        paymentEmailData = DataGenerateUtils.generateEmailAddressData();
         postcodeData = DataGenerateUtils.generatePostCodeData();
 
         Thread.sleep(5000);

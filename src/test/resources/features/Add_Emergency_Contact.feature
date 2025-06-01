@@ -9,3 +9,4 @@ Feature: Add Emergency Contacts
     Examples:
       | membership | paymentMethod | numberOfEmergencyContact |
       | Community  |               | 1                        |
+      | Community  |               | 2                        |

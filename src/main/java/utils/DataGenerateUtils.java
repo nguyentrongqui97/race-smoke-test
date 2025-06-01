@@ -13,6 +13,10 @@ public class DataGenerateUtils {
         return DataFakerHelpers.generateDataFaker().name().fullName();
     }
 
+    public static String generateFirstNameData() {
+        return DataFakerHelpers.generateDataFaker().name().firstName();
+    }
+
     public static String generateLastNameData() {
         return DataFakerHelpers.generateDataFaker().name().lastName();
     }
@@ -70,7 +74,7 @@ public class DataGenerateUtils {
         return String.valueOf(randomDate.getYear());
     }
 
-    public static String generatePaymentEmailAddressData() {
+    public static String generateEmailAddressData() {
         return DataFakerHelpers.generateDataFaker().internet().emailAddress();
     }
 }

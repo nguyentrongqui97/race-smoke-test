@@ -463,6 +463,7 @@ public class WebUI {
             LogUtils.error("Cannot tick the checkbox: " + by.toString());
             Assert.fail("Cannot tick the checkbox: " + by);
         }
+        LogUtils.info("Click element: " + by);
     }
 
     public static void clickFirstListItem(By by) {
