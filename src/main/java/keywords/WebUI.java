@@ -157,7 +157,7 @@ public class WebUI {
                     Duration.ofMillis(500));
             wait.until(ExpectedConditions.visibilityOfElementLocated(by));
         } catch (Throwable error) {
-            LogUtils.error("Time out waiting for element visible." + by.toString());
+            LogUtils.error("Time out waiting for element visible." + by.toString() + " in " + timeOut + " seconds.");
             Assert.fail("Time out waiting for element visible.");
         }
     }
@@ -336,9 +336,34 @@ public class WebUI {
         LogUtils.info("Click element: " + by);
     }
 
+    public static void clickElementWithJSWithoutScrolling(By by) {
+        waitForPageLoaded();
+        waitForElementClickable(by);
+        WebElement element = DriverManager.getDriver().findElement(by);
+        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
+        js.executeScript("arguments[0].click();", element);
+        LogUtils.info("Click element: " + by);
+    }
+
+    public static void clickElementWithJSWithoutScrolling(By by, int timeOut) {
+        waitForPageLoaded();
+        waitForElementClickable(by, timeOut);
+        WebElement element = DriverManager.getDriver().findElement(by);
+        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
+        js.executeScript("arguments[0].click();", element);
+        LogUtils.info("Click element: " + by);
+    }
+
     public static void sendText(By by, String value) {
         waitForPageLoaded();
         waitForElementVisible(by);
+        getWebElement(by).sendKeys(value);
+        LogUtils.info("Set text: " + value + " on element " + by);
+    }
+
+    public static void sendText(By by, String value, int timeOut) {
+        waitForPageLoaded();
+        waitForElementVisible(by, timeOut);
         getWebElement(by).sendKeys(value);
         LogUtils.info("Set text: " + value + " on element " + by);
     }
@@ -466,6 +491,22 @@ public class WebUI {
         LogUtils.info("Click element: " + by);
     }
 
+    public static void clickCheckBox(By by, int timeOut) {
+        waitForPageLoaded();
+        WebElement checkbox = getWebElement(by);
+        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
+        js.executeScript("arguments[0].click();", checkbox);
+        try {
+            if (!checkbox.isSelected()) {
+                checkbox.click();
+            }
+        } catch (Throwable error) {
+            LogUtils.error("Cannot tick the checkbox: " + by.toString());
+            Assert.fail("Cannot tick the checkbox: " + by);
+        }
+        LogUtils.info("Click element: " + by);
+    }
+
     public static void clickFirstListItem(By by) {
         waitForPageLoaded();
         waitForElementVisible(by);
@@ -473,8 +514,9 @@ public class WebUI {
 
         if (!listItems.isEmpty()) {
             listItems.get(0).click();
+            LogUtils.info("Click element: " + by);
         } else {
-            System.out.println("No list items found.");
+            LogUtils.error("No item of the list found. " + by);
         }
     }
 
@@ -485,10 +527,35 @@ public class WebUI {
 
         if (!listItems.isEmpty()) {
             listItems.get(0).click();
+            LogUtils.info("Click element: " + by);
         } else {
-            System.out.println("No list items found.");
+            LogUtils.error("No item of the list found. " + by);
         }
     }
 
+    public static void locateToAListOfItemsAndClickTheItem(By by, int itemOrder) {
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        List<WebElement> listItems = DriverManager.getDriver().findElements(by);
 
+        if (!listItems.isEmpty()) {
+            listItems.get(itemOrder).click();
+            LogUtils.info("Click element: " + by + " at position: " + itemOrder);
+        } else {
+            LogUtils.error("No item of the list found. " + by);
+        }
+    }
+
+    public static void locateToAListOfItemsAndClickTheItem(By by, int itemOrder, int timeOut) {
+        waitForPageLoaded();
+        waitForElementVisible(by, timeOut);
+        List<WebElement> listItems = DriverManager.getDriver().findElements(by);
+
+        if (!listItems.isEmpty()) {
+            listItems.get(itemOrder).click();
+            LogUtils.info("Click element: " + by + " at position: " + itemOrder);
+        } else {
+            LogUtils.error("No item of the list found. " + by);
+        }
+    }
 }

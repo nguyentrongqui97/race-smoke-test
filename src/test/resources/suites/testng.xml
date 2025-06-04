@@ -1,12 +1,40 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
-<suite name="All Test Suites">
-    <test name="Run All Test Runers">
+<suite name="All Test Suites" parallel="tests" thread-count="3">
+
+    <test thread-count="2" name="TestRunnerLogin">
         <classes>
             <class name="runners.TestRunnerLogin"/>
+        </classes>
+    </test>
+
+    <test thread-count="2" name="TestSignUpCreditDebit">
+        <classes>
             <class name="runners.TestRunnerSignUpCreditDebit"/>
+        </classes>
+    </test>
+
+    <test thread-count="2" name="TestSignUpDirectDebit">
+        <classes>
             <class name="runners.TestRunnerSignUpDirectDebit"/>
+        </classes>
+    </test>
+
+    <test thread-count="2" name="TestAddJuniorProfile">
+        <classes>
             <class name="runners.TestRunnerAddJuniorProfile"/>
+        </classes>
+    </test>
+
+    <test thread-count="2" name="TestAddEmergencyContact">
+        <classes>
             <class name="runners.TestRunnerAddEmergencyContact"/>
         </classes>
     </test>
+
+    <test thread-count="2" name="TestUpgradeMembership">
+        <classes>
+            <class name="runners.TestRunnerUpgradeMembership"/>
+        </classes>
+    </test>
+
 </suite>

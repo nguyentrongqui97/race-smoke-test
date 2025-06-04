@@ -99,7 +99,7 @@ public class SignUpPage extends CommonPage {
     static By goCardlessBillingAddressLine1 = By.id("address_line1");
     static By goCardlessCity = By.id("city");
     static By goCardLessPostcode = By.id("postal_code");
-    static By goCardlessContinueButton = By.cssSelector("button.fs-unmask:nth-child(1)");
+    static By goCardlessContinueButton = By.xpath("//button[.//span[text()='Continue']]");
     static By goCardlessSelectBankForm = By.cssSelector(".css-2lftss > div:nth-child(1)");
     static By goCardlessSelectBankSuccessOption = By.cssSelector("li.css-0:nth-child(4) > button:nth-child(1)");
     static By goCardlessSetUpThisDirectDebitButton = By.cssSelector(".css-m12kbt");
@@ -125,6 +125,7 @@ public class SignUpPage extends CommonPage {
 
     public void completePersonalDetails() throws InterruptedException {
 
+
         firstNameData = DataGenerateUtils.generateFullNameData();
         lastNameData = DataGenerateUtils.generateLastNameData();
         addressLine1Data = DataGenerateUtils.generateAddressLine1Data();
@@ -137,9 +138,7 @@ public class SignUpPage extends CommonPage {
         yearData = DataGenerateUtils.generateYearData();
 
         //Type data to textboxes
-        Thread.sleep(5000);
-        waitForElementVisible(firstName);
-        sendText(firstName, firstNameData);
+        sendText(firstName, firstNameData, 60);
         sendText(lastName, lastNameData);
         sendText(day, dayData);
         sendText(month, monthData);
@@ -170,7 +169,7 @@ public class SignUpPage extends CommonPage {
         switch (membership) {
             case "Community":
                 clickElement(communityPlan);
-                clickCheckBox(agreementRadioButton);
+                clickCheckBox(agreementRadioButton, 20);
                 clickElement(nextButton, 2000);
                 break;
             case "Active":
@@ -187,10 +186,9 @@ public class SignUpPage extends CommonPage {
         switch (paymentMethod) {
             case "Credit-Debit":
                 clickCheckBox(creditDebitCardRadioButton);
-                clickCheckBox(agreementRadioButton);
+                clickCheckBox(agreementRadioButton, 20);
                 clickElement(nextContinueToPaymentButton);
 
-                //Stripe
                 waitForElementVisible(stripePaymentForm, 8000);
                 sendText(stripeEmail, paymentEmailData);
                 sendText(stripeCardNumber, STRIPE_CARD_NUMBER);
@@ -201,10 +199,9 @@ public class SignUpPage extends CommonPage {
                 break;
             case "Direct Debit":
                 clickCheckBox(directDebitRadioButton);
-                clickCheckBox(agreementRadioButton);
+                clickCheckBox(agreementRadioButton, 20);
                 clickElement(nextContinueToPaymentButton);
 
-                //GoCardless
                 waitForElementVisible(goCardLessPaymentForm, 60);
                 sendText(goCardlessFirstname, firstNameData);
                 sendText(goCardlessLastname, lastNameData);
@@ -222,11 +219,65 @@ public class SignUpPage extends CommonPage {
         }
     }
 
-
     public void successfullySignUpForANewAccount(String membership) {
         waitForTextVisible(paymentSuccessStatus, 60);
         assertTextEqual(paymentSuccessStatus, "Payment successful");
         clickElement(nextButton);
         clickElement(skipButton);
     }
+
+    private void handleCreditDebitPayment() {
+        paymentEmailData = DataGenerateUtils.generateEmailAddressData();
+
+        waitForElementVisible(stripePaymentForm, 80);
+        sendText(stripeEmail, paymentEmailData);
+        sendText(stripeCardNumber, STRIPE_CARD_NUMBER);
+        sendText(stripeCardExpiry, STRIPE_CARD_EXPIRY);
+        sendText(stripeCardCvc, STRIPE_CARD_CVC);
+        sendText(stripeCardHolderName, firstNameData + lastNameData);
+        clickElementWithJS(stripePayButton);
+    }
+
+    private void handleDirectDebitPayment() {
+
+        paymentEmailData = DataGenerateUtils.generateEmailAddressData();
+        postcodeData = DataGenerateUtils.generatePostCodeData();
+
+        waitForElementVisible(goCardLessPaymentForm, 80);
+        sendText(goCardlessFirstname, firstNameData);
+        sendText(goCardlessLastname, lastNameData);
+        sendText(goCardlessEmail, paymentEmailData);
+        clickElement(goCardLessEnterAddressManuallyButton);
+        sendText(goCardlessBillingAddressLine1, addressLine1Data);
+        sendText(goCardlessCity, cityData);
+        sendText(goCardLessPostcode, postcodeData);
+        clickElement(goCardlessContinueButton);
+        waitForElementVisible(goCardlessSelectBankForm);
+        clickElementWithJS(goCardlessSelectBankSuccessOption);
+        clickElementWithJS(goCardlessSetUpThisDirectDebitButton);
+        clickElementWithJS(goCardlessContinueToManualWebLoginButton);
+    }
+
+    public void makePayment(String paymentMethod) {
+        switch (paymentMethod) {
+            case "Credit-Debit":
+                handleCreditDebitPayment();
+                break;
+            case "Direct Debit":
+                handleDirectDebitPayment();
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported payment method: " + paymentMethod);
+        }
+    }
+
+    public String returnFirstName() {
+        return firstNameData;
+    }
+
+    public String returnLastName() {
+        return lastNameData;
+    }
+
+
 }

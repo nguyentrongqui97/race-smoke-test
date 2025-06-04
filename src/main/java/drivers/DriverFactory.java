@@ -1,6 +1,7 @@
 package drivers;
 
 import constants.ConstantGlobal;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -8,6 +9,7 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 
 public class DriverFactory {
 
@@ -85,7 +87,9 @@ public class DriverFactory {
                 System.out.println("Browser " + browserName + " is invalid. Launching Chrome as the default browser.");
                 driver = initChromeDriver();
         }
-        driver.manage().window().maximize();
+//        driver.manage().window().maximize();
+        //Set window size to handle the case of clicking "CONFIRM UPGRADE" button in Upgrade_Membership.feature
+        driver.manage().window().setSize(new Dimension(1920, 1080));
         return driver;
     }
 

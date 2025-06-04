@@ -12,6 +12,7 @@ public class TestContext {
     private SignUpPage signUpPage;
     private AccountManagerPage accountManagerPage;
     private MyProfilePage myProfilePage;
+    private MembershipManagementPage membershipManagementPage;
 
 
     public TestContext() {
@@ -19,7 +20,7 @@ public class TestContext {
 //        LogUtils.info("Driver in TestContext: " + getDriver());
     }
 
-    public LoginPage    getLoginPage() {
+    public LoginPage getLoginPage() {
         if (loginPage == null) {
             loginPage = new LoginPage();
         }
@@ -40,25 +41,32 @@ public class TestContext {
         return dashBoardPage;
     }
 
-    public SignUpPage getSignUpPage(){
+    public SignUpPage getSignUpPage() {
         if (signUpPage == null) {
             signUpPage = new SignUpPage();
         }
         return signUpPage;
     }
 
-    public AccountManagerPage getAccountManagerPage(){
+    public AccountManagerPage getAccountManagerPage() {
         if (accountManagerPage == null) {
             accountManagerPage = new AccountManagerPage();
         }
         return accountManagerPage;
     }
 
-    public MyProfilePage getMyProfilePage(){
+    public MyProfilePage getMyProfilePage() {
         if (myProfilePage == null) {
             myProfilePage = new MyProfilePage();
         }
         return myProfilePage;
+    }
+
+    public MembershipManagementPage getMembershipManagementPage() {
+        if (membershipManagementPage == null) {
+            membershipManagementPage = new MembershipManagementPage(signUpPage);
+        }
+        return membershipManagementPage;
     }
 
     public WebDriver getDriver() {

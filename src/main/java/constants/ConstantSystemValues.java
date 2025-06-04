@@ -11,5 +11,9 @@ public class ConstantSystemValues {
     public final static String SUCCESS_MESSAGE_ADD_EMERGENCY_CONTACT = PropertiesHelpers.getValue("SUCCESS_MESSAGE_ADD_EMERGENCY_CONTACT");
     public final static String RELATIONSHIP_AS_FATHER = PropertiesHelpers.getValue("RELATIONSHIP_AS_FATHER");
     public final static String RELATIONSHIP_AS_MOTHER = PropertiesHelpers.getValue("RELATIONSHIP_AS_MOTHER");
+    public final static String ACTIVE = PropertiesHelpers.getValue("ACTIVE");
+    public final static String RACER = PropertiesHelpers.getValue("RACER");
+    public final static String ULTIMATE_RACER = PropertiesHelpers.getValue("ULTIMATE_RACER");
+    public final static String SUCCESS_MESSAGE_UPGRADE_MEMBERSHIP = PropertiesHelpers.getValue("SUCCESS_MESSAGE_UPGRADE_MEMBERSHIP");
 
 }
