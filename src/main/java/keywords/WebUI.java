@@ -396,6 +396,7 @@ public class WebUI {
     }
 
     public static void assertTextEqual(By by, String expectedText) {
+        LogUtils.info("Asserting " + by + " having expected text: " + expectedText);
         waitForPageLoaded();
         waitForElementVisible(by);
         String actualText = getWebElement(by).getText().trim();
@@ -403,6 +404,7 @@ public class WebUI {
     }
 
     public static void waitForExpectedTextThenAssertActualTextEqual(By by, String expectedText) {
+        LogUtils.info("Asserting " + by + " having expected text: " + expectedText);
         waitForPageLoaded();
         waitForElementVisibleAndAppearExpectedText(by, expectedText);
         String actualText = getWebElement(by).getText().trim();
@@ -410,6 +412,7 @@ public class WebUI {
     }
 
     public static void waitForExpectedTextThenAssertActualTextEqual(By by, String expectedText, int timeOut) {
+        LogUtils.info("Asserting " + by + " having expected text: " + expectedText);
         waitForPageLoaded();
         waitForElementVisibleAndAppearExpectedText(by, expectedText, timeOut);
         String actualText = getWebElement(by).getText().trim();
@@ -417,6 +420,7 @@ public class WebUI {
     }
 
     public static void assertTextEqual(By by, String expectedText, int timeOut) {
+        LogUtils.info("Asserting " + by + " having expected text: " + expectedText);
         waitForPageLoaded();
         waitForElementVisible(by, timeOut);
         String actualText = getWebElement(by).getText().trim();
@@ -557,5 +561,32 @@ public class WebUI {
         } else {
             LogUtils.error("No item of the list found. " + by);
         }
+    }
+
+    public static void assertTextContainsByOrder(By by, int itemOrder, String expectedSubstring) {
+        LogUtils.info("Asserting " + by + "at order " + itemOrder + " having expected text: " + expectedSubstring);
+
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        List<WebElement> elements = DriverManager.getDriver().findElements(by);
+        if (itemOrder >= elements.size()) {
+            Assert.fail("Invalid item index.");
+        }
+        String actualText = elements.get(itemOrder).getText().trim();
+        Assert.assertTrue(actualText.contains(expectedSubstring),
+                "Text does not contain expected substring. Actual: " + actualText + ", Expected to contain: " + expectedSubstring);
+    }
+
+    public static void assertTextContainsByOrder(By by, int itemOrder, String expectedSubstring, int timeOut) {
+        LogUtils.info("Asserting " + by + "at order " + itemOrder + " having expected text: " + expectedSubstring + " within " + timeOut);
+        waitForPageLoaded();
+        waitForElementVisible(by, timeOut);
+        List<WebElement> elements = DriverManager.getDriver().findElements(by);
+        if (itemOrder >= elements.size()) {
+            Assert.fail("Invalid item index.");
+        }
+        String actualText = elements.get(itemOrder).getText().trim();
+        Assert.assertTrue(actualText.contains(expectedSubstring),
+                "Text does not contain expected substring. Actual: " + actualText + ", Expected to contain: " + expectedSubstring);
     }
 }

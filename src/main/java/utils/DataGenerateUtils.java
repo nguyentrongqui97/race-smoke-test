@@ -41,28 +41,48 @@ public class DataGenerateUtils {
         return DataFakerHelpers.generateDataFaker().address().cityName();
     }
 
-    public static String generateDayData() {
+    public static LocalDate generateRandomValidDate() {
         Random random = new Random();
         LocalDate startDate = LocalDate.of(1950, 1, 1);
-        long daysForParents = ChronoUnit.DAYS.between(startDate, LocalDate.of(2009, 12, 31));
-        LocalDate randomDate = startDate.plusDays(random.nextInt((int) daysForParents + 1));
-        return String.valueOf(randomDate.getDayOfMonth());
+        LocalDate endDate = LocalDate.of(2009, 12, 28);
+        long days = ChronoUnit.DAYS.between(startDate, endDate);
+        return startDate.plusDays(random.nextInt((int) days + 1));
+    }
+
+//    public static String generateDayData() {
+//        Random random = new Random();
+//        LocalDate startDate = LocalDate.of(1950, 1, 1);
+//        long daysForParents = ChronoUnit.DAYS.between(startDate, LocalDate.of(2009, 12, 31));
+//        LocalDate randomDate = startDate.plusDays(random.nextInt((int) daysForParents + 1));
+//        return String.valueOf(randomDate.getDayOfMonth());
+//    }
+//
+//    public static String generateMonthData() {
+//        Random random = new Random();
+//        LocalDate startDate = LocalDate.of(1950, 1, 1);
+//        long daysForParents = ChronoUnit.DAYS.between(startDate, LocalDate.of(2009, 12, 31));
+//        LocalDate randomDate = startDate.plusDays(random.nextInt((int) daysForParents + 1));
+//        return String.valueOf(randomDate.getMonthValue());
+//    }
+//
+//    public static String generateYearData() {
+//        Random random = new Random();
+//        LocalDate startDate = LocalDate.of(1950, 1, 1);
+//        long daysForParents = ChronoUnit.DAYS.between(startDate, LocalDate.of(2008, 12, 31));
+//        LocalDate randomDate = startDate.plusDays(random.nextInt((int) daysForParents + 1));
+//        return String.valueOf(randomDate.getYear());
+//    }
+
+    public static String generateDayData() {
+        return String.valueOf(generateRandomValidDate().getDayOfMonth());
     }
 
     public static String generateMonthData() {
-        Random random = new Random();
-        LocalDate startDate = LocalDate.of(1950, 1, 1);
-        long daysForParents = ChronoUnit.DAYS.between(startDate, LocalDate.of(2009, 12, 31));
-        LocalDate randomDate = startDate.plusDays(random.nextInt((int) daysForParents + 1));
-        return String.valueOf(randomDate.getMonthValue());
+        return String.valueOf(generateRandomValidDate().getMonthValue());
     }
 
     public static String generateYearData() {
-        Random random = new Random();
-        LocalDate startDate = LocalDate.of(1950, 1, 1);
-        long daysForParents = ChronoUnit.DAYS.between(startDate, LocalDate.of(2008, 12, 31));
-        LocalDate randomDate = startDate.plusDays(random.nextInt((int) daysForParents + 1));
-        return String.valueOf(randomDate.getYear());
+        return String.valueOf(generateRandomValidDate().getYear());
     }
 
     public static String generateYearForJuniorData() {

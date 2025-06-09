@@ -1,4 +1,4 @@
-Feature: Sign up for an account paying via Direct Debit
+Feature: Sign up for an account paying via Credit-Debit
 
   @SMOKE
   Scenario Outline: Sign up for a new account "<membership>" via Credit-Debit

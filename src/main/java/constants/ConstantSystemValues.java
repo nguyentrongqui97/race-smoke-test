@@ -18,4 +18,6 @@ public class ConstantSystemValues {
     public static final String STRIPE_CARD_NUMBER = PropertiesHelpers.getValue("STRIPE_CARD_NUMBER");
     public static final String STRIPE_CARD_EXPIRY = PropertiesHelpers.getValue("STRIPE_CARD_EXPIRY");
     public static final String STRIPE_CARD_CVC = PropertiesHelpers.getValue("STRIPE_CARD_CVC");
+    public final static String SUCCESS_MESSAGE_REFUND_MEMBERSHIP = PropertiesHelpers.getValue("SUCCESS_MESSAGE_REFUND_MEMBERSHIP");
+
 }

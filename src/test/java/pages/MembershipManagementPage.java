@@ -24,7 +24,9 @@ public class MembershipManagementPage {
     static By creditDebitCardRadioButton = By.cssSelector("input[name='paymentMethod'][value='STRIPE']");
     static By directDebitRadioButton = By.cssSelector("input[name='paymentMethod'][value='GOCARDLESS']");
     static By confirmUpgradeButton = By.xpath("//button[contains(text(),'Confirm Upgrade')]");
-
+    static By membershipTypeList = By.xpath("//h6[text()='Member type:']/following-sibling::p");
+    static By refundMembershipButtonList = By.xpath("//button[normalize-space()='Refund membership']");
+    static By confirmRefundButton = By.xpath("//button[contains(text(),'Refund Membership')]");
     static By successStatusMessage = By.cssSelector("div.MuiPaper-root");
 
 
@@ -59,9 +61,10 @@ public class MembershipManagementPage {
 
         if ("Credit-Debit".equalsIgnoreCase(upgradedPaymentMethod)) {
             clickCheckBox(creditDebitCardRadioButton);
-        } else {
-            clickCheckBox(directDebitRadioButton);
         }
+//        else {
+//            clickCheckBox(directDebitRadioButton);
+//        }
 
         clickElementWithJSWithoutScrolling(confirmUpgradeButton, 20);
 
@@ -72,12 +75,33 @@ public class MembershipManagementPage {
     public void successfullyUpgradeAMembership(String membership) {
         String accountMembershipFirstName = signUpPage.returnFirstName();
         String accountMembershipLastName = signUpPage.returnLastName();
-        System.out.println("accountMembershipFirstName" + accountMembershipFirstName);
-        System.out.println("accountMembershipLastName" + accountMembershipLastName);
 
         assertTextEqual(successStatusMessage,
                 accountMembershipFirstName + " " + accountMembershipLastName + "'s " + SUCCESS_MESSAGE_UPGRADE_MEMBERSHIP + membership,
                 20);
+
+        assertTextContainsByOrder(membershipTypeList, 0, membership, 30);
+    }
+
+    public void refundAMembership(String upgradedMembership, String refundMembership) {
+        refreshPage();
+        locateToAListOfItemsAndClickTheItem(refundMembershipButtonList, 0);
+        assertTextEqual(currentMembership, upgradedMembership);
+        assertTextEqual(membershipAfterUpgrade, refundMembership);
+
+        clickElementWithJSWithoutScrolling(confirmRefundButton, 30);
+
+    }
+
+    public void successfullyRefundAMembership(String membership) {
+        String accountMembershipFirstName = signUpPage.returnFirstName();
+        String accountMembershipLastName = signUpPage.returnLastName();
+
+        assertTextEqual(successStatusMessage,
+                accountMembershipFirstName + " " + accountMembershipLastName + "'s " + SUCCESS_MESSAGE_REFUND_MEMBERSHIP + membership + " membership",
+                30);
+
+        assertTextContainsByOrder(membershipTypeList, 0, membership);
     }
 }
 

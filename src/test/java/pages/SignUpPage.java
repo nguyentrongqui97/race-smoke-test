@@ -96,7 +96,7 @@ public class SignUpPage extends CommonPage {
     static By goCardlessFirstname = By.id("given_name");
     static By goCardlessLastname = By.id("family_name");
     static By goCardlessEmail = By.id("email");
-    static By goCardLessEnterAddressManuallyButton = By.cssSelector("button.fs-unmask:nth-child(10)");
+    static By goCardLessEnterAddressManuallyButton = By.xpath("//button[.//span[text()='or click here to enter your address manually']]");
     static By goCardlessBillingAddressLine1 = By.id("address_line1");
     static By goCardlessCity = By.id("city");
     static By goCardLessPostcode = By.id("postal_code");
@@ -105,6 +105,7 @@ public class SignUpPage extends CommonPage {
     static By goCardlessSelectBankSuccessOption = By.xpath("//*[contains(text(), 'Read Refund Account Bank - Automatically authorises the payment request, and returns payment with payer account details')]");
     static By goCardlessSetUpThisDirectDebitButton = By.xpath("//*[text()='Set up this Direct Debit']");
     static By goCardlessContinueToManualWebLoginButton = By.xpath("//*[text()='Continue to manual web login']");
+    static By goCardlessConfirmAndContinueButton = By.xpath("//*[text()='Confirm and continue']");
 
 
     //After payment
@@ -212,7 +213,6 @@ public class SignUpPage extends CommonPage {
                 sendText(goCardlessCity, cityData);
                 sendText(goCardLessPostcode, postcodeData);
                 clickElement(goCardlessContinueButton);
-//                waitForElementVisible(goCardlessSelectBankForm);
                 clickElementWithJS(goCardlessSelectBankSuccessOption);
                 clickElementWithJS(goCardlessSetUpThisDirectDebitButton);
                 clickElementWithJS(goCardlessContinueToManualWebLoginButton);
@@ -248,14 +248,14 @@ public class SignUpPage extends CommonPage {
         sendText(goCardlessFirstname, firstNameData);
         sendText(goCardlessLastname, lastNameData);
         sendText(goCardlessEmail, paymentEmailData);
-        clickElement(goCardLessEnterAddressManuallyButton);
-        sendText(goCardlessBillingAddressLine1, addressLine1Data);
-        sendText(goCardlessCity, cityData);
-        sendText(goCardLessPostcode, postcodeData);
+        //Commented out because of behavior changes, Direct Debit cannot choose payment method when upgrading
+//        clickElement(goCardLessEnterAddressManuallyButton);
+//        sendText(goCardlessBillingAddressLine1, addressLine1Data);
+//        sendText(goCardlessCity, cityData);
+//        sendText(goCardLessPostcode, postcodeData);
         clickElement(goCardlessContinueButton);
-//        waitForElementVisible(goCardlessSelectBankForm);
         clickElementWithJS(goCardlessSelectBankSuccessOption);
-        clickElementWithJS(goCardlessSetUpThisDirectDebitButton);
+        clickElementWithJS(goCardlessConfirmAndContinueButton);
         clickElementWithJS(goCardlessContinueToManualWebLoginButton);
     }
 

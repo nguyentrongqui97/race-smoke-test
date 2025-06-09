@@ -1,5 +1,7 @@
 package helpers;
 
+import utils.LogUtils;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -28,7 +30,7 @@ public class PropertiesHelpers {
                 tempProp.load(file);
                 properties.putAll(tempProp);
             }
-            System.out.println("Load all file properties successfully.");
+            LogUtils.info("Load all file properties successfully.");
             return properties;
         } catch (IOException ioe) {
             System.out.println("Cannot load properties files. Initiate Properties Null.");
