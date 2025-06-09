@@ -15,5 +15,7 @@ public class ConstantSystemValues {
     public final static String RACER = PropertiesHelpers.getValue("RACER");
     public final static String ULTIMATE_RACER = PropertiesHelpers.getValue("ULTIMATE_RACER");
     public final static String SUCCESS_MESSAGE_UPGRADE_MEMBERSHIP = PropertiesHelpers.getValue("SUCCESS_MESSAGE_UPGRADE_MEMBERSHIP");
-
+    public static final String STRIPE_CARD_NUMBER = PropertiesHelpers.getValue("STRIPE_CARD_NUMBER");
+    public static final String STRIPE_CARD_EXPIRY = PropertiesHelpers.getValue("STRIPE_CARD_EXPIRY");
+    public static final String STRIPE_CARD_CVC = PropertiesHelpers.getValue("STRIPE_CARD_CVC");
 }

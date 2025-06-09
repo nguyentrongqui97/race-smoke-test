@@ -5,6 +5,9 @@ import drivers.DriverManager;
 import helpers.CaptureHelpers;
 import helpers.PropertiesHelpers;
 import io.cucumber.java.*;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import utils.FileManagerUtils;
 
 public class CucumberHooks {
 
@@ -39,7 +42,9 @@ public class CucumberHooks {
     public void afterStep(Scenario scenario) {
         System.out.println("================ afterStep ================");
         if (scenario.isFailed()) {
-            CaptureHelpers.takeScreenshot(String.valueOf(scenario));
+            final byte[] screenshot = ((TakesScreenshot) DriverManager.getDriver()).getScreenshotAs(OutputType.BYTES);
+            scenario.attach(screenshot, "image/png", "Screenshot Failed");
         }
+        FileManagerUtils.deleteAllThreadFiles("email", "otp");
     }
 }

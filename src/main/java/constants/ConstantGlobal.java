@@ -32,8 +32,6 @@ public class ConstantGlobal {
     public static final String PASSWORD = PropertiesHelpers.getValue("PASSWORD");
     public static final String EMAIL_TARGET_SENDER = PropertiesHelpers.getValue("EMAIL_TARGET_SENDER");
     public static final String DATA_FAKER_EN = PropertiesHelpers.getValue("DATA_FAKER_EN");
-    public static final String STRIPE_CARD_NUMBER = PropertiesHelpers.getValue("STRIPE_CARD_NUMBER");
-    public static final String STRIPE_CARD_EXPIRY = PropertiesHelpers.getValue("STRIPE_CARD_EXPIRY");
-    public static final String STRIPE_CARD_CVC = PropertiesHelpers.getValue("STRIPE_CARD_CVC");
+    public static final String TEMP_DATA_FILE_DIR = PropertiesHelpers.getValue("TEMP_DATA_FILE_DIR");
 
 }

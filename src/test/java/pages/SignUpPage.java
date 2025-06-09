@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 import static constants.ConstantGlobal.*;
+import static constants.ConstantSystemValues.*;
 import static keywords.WebUI.*;
 
 public class SignUpPage extends CommonPage {
@@ -101,9 +102,9 @@ public class SignUpPage extends CommonPage {
     static By goCardLessPostcode = By.id("postal_code");
     static By goCardlessContinueButton = By.xpath("//button[.//span[text()='Continue']]");
     static By goCardlessSelectBankForm = By.cssSelector(".css-2lftss > div:nth-child(1)");
-    static By goCardlessSelectBankSuccessOption = By.cssSelector("li.css-0:nth-child(4) > button:nth-child(1)");
-    static By goCardlessSetUpThisDirectDebitButton = By.cssSelector(".css-m12kbt");
-    static By goCardlessContinueToManualWebLoginButton = By.cssSelector(".css-10qg4zc");
+    static By goCardlessSelectBankSuccessOption = By.xpath("//*[contains(text(), 'Read Refund Account Bank - Automatically authorises the payment request, and returns payment with payer account details')]");
+    static By goCardlessSetUpThisDirectDebitButton = By.xpath("//*[text()='Set up this Direct Debit']");
+    static By goCardlessContinueToManualWebLoginButton = By.xpath("//*[text()='Continue to manual web login']");
 
 
     //After payment
@@ -112,14 +113,14 @@ public class SignUpPage extends CommonPage {
 
     public void completeRegisterForANewAccount() throws InterruptedException {
         MailGeneratorHelpers helper = new MailGeneratorHelpers(DriverManager.getDriver());
-        helper.openMailGeneratorTabAndCopyEmail(emailFieldLocator);
+        helper.openMailGeneratorTabAndSaveEmail(emailFieldLocator);
         helper.pasteEmailInMainTab(emailTextBox);
         waitForElementVisible(OTPPageTitle);
         sendText(passwordTextBox, PASSWORD);
         sendText(confirmPasswordTextBox, PASSWORD);
         clickElement(getStartedButton);
-        helper.getOTPFromMailTabAndCopyToClipboard();
-        helper.enterOTPInMainTab();
+        helper.getOTPFromMailTabAndSaveToFile();
+        helper.enterOTPFromFileInMainTab();
         clickElement(verifyOTPButton);
     }
 
@@ -211,7 +212,7 @@ public class SignUpPage extends CommonPage {
                 sendText(goCardlessCity, cityData);
                 sendText(goCardLessPostcode, postcodeData);
                 clickElement(goCardlessContinueButton);
-                waitForElementVisible(goCardlessSelectBankForm);
+//                waitForElementVisible(goCardlessSelectBankForm);
                 clickElementWithJS(goCardlessSelectBankSuccessOption);
                 clickElementWithJS(goCardlessSetUpThisDirectDebitButton);
                 clickElementWithJS(goCardlessContinueToManualWebLoginButton);
@@ -252,7 +253,7 @@ public class SignUpPage extends CommonPage {
         sendText(goCardlessCity, cityData);
         sendText(goCardLessPostcode, postcodeData);
         clickElement(goCardlessContinueButton);
-        waitForElementVisible(goCardlessSelectBankForm);
+//        waitForElementVisible(goCardlessSelectBankForm);
         clickElementWithJS(goCardlessSelectBankSuccessOption);
         clickElementWithJS(goCardlessSetUpThisDirectDebitButton);
         clickElementWithJS(goCardlessContinueToManualWebLoginButton);

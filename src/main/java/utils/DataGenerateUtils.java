@@ -60,7 +60,7 @@ public class DataGenerateUtils {
     public static String generateYearData() {
         Random random = new Random();
         LocalDate startDate = LocalDate.of(1950, 1, 1);
-        long daysForParents = ChronoUnit.DAYS.between(startDate, LocalDate.of(2009, 12, 31));
+        long daysForParents = ChronoUnit.DAYS.between(startDate, LocalDate.of(2008, 12, 31));
         LocalDate randomDate = startDate.plusDays(random.nextInt((int) daysForParents + 1));
         return String.valueOf(randomDate.getYear());
     }

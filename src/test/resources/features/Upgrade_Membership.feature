@@ -11,7 +11,7 @@ Feature: Upgrade membership
       | Community         |                     | Active             | Credit-Debit          |
       | Active            | Credit-Debit        | Racer              | Credit-Debit          |
       | Community         |                     | Racer              | Direct Debit          |
-      | Racer             | Credit-Debit        | Ultimate Racer     | Direct Debit          |
+      | Racer             | Direct Debit        | Ultimate Racer     | Direct Debit          |
 
 
 
