@@ -1,17 +1,21 @@
-# Use official Maven image with Java 17
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Use a Java 17 base image (no Maven preinstalled)
+FROM eclipse-temurin:17 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the project files into the container
+# Copy Maven wrapper files first to leverage Docker layer caching
+COPY .mvn/ .mvn/
+COPY mvnw .
+
+# Make sure the wrapper is executable
+RUN chmod +x mvnw
+
+# Copy the rest of the project files
 COPY . .
 
+# Then build using Maven wrapper
+RUN ./mvnw clean install
 
-# Then build
-RUN mvn clean install
-
-
-# Build the project and run tests
-RUN mvn clean test
-
+# Run tests
+RUN ./mvnw clean test
