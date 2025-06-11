@@ -1,20 +1,17 @@
-# Use a Java 17 base image (no Maven preinstalled)
-FROM eclipse-temurin:17 AS build
+FROM eclipse-temurin:17
 
-# Set the working directory inside the container
+# Create a new user and group
+RUN groupadd -r appgroup && useradd -m -g appgroup appuser
+
+# Set workdir and change owner
 WORKDIR /app
+COPY . /app
+RUN chown -R appuser:appgroup /app
 
-# Copy Maven wrapper files first to leverage Docker layer caching
-COPY .mvn/ .mvn/
-COPY mvnw .
+# Switch to the new user
+USER appuser
 
-# Make sure the wrapper is executable
-RUN chmod +x mvnw
-
-# Copy the rest of the project files
-COPY . .
-
-# Then build using Maven wrapper
+# Run the Maven wrapper
 RUN ./mvnw clean install
 
 # Run tests
