@@ -16,6 +16,7 @@ public class MembershipManagementPage {
     }
 
     static By upgradeMembershipButtonList = By.xpath("//button[normalize-space()='Upgrade membership']");
+    static By communityOptionModal = By.cssSelector("div.css-1wicjwk:nth-child(1) > div:nth-child(1) > div:nth-child(6) > button:nth-child(1)");
     static By upgradeToActiveButton = By.cssSelector("div.css-1wicjwk:nth-child(2) > div:nth-child(1) > div:nth-child(6) > button:nth-child(1)");
     static By upgradeToRacerButton = By.cssSelector("div.css-1wicjwk:nth-child(3) > div:nth-child(1) > div:nth-child(6) > button:nth-child(1)");
     static By upgradeToUltimateRacerButton = By.cssSelector("div.css-1wicjwk:nth-child(4) > div:nth-child(1) > div:nth-child(6) > button:nth-child(1)");
@@ -28,6 +29,10 @@ public class MembershipManagementPage {
     static By refundMembershipButtonList = By.xpath("//button[normalize-space()='Refund membership']");
     static By confirmRefundButton = By.xpath("//button[contains(text(),'Refund Membership')]");
     static By successStatusMessage = By.cssSelector("div.MuiPaper-root");
+    static By manageRenewalButtonList = By.xpath("//button[normalize-space()='Manage renewal']");
+    static By manageRenewalMembershipTypeList = By.xpath("//h6[text()='Expiration:']/following::p[contains(text(),'Your membership type will change to')]");
+    static By confirmChangeButton = By.xpath("//button[contains(text(),'Confirm change')]");
+    static By expirationDateList = By.xpath("//p[contains(text(),'renew')]/b");
 
 
     public void upgradeAMembership(String beforeUpgradeMembership, String upgradedMembership, String upgradedPaymentMethod) {
@@ -103,5 +108,65 @@ public class MembershipManagementPage {
 
         assertTextContainsByOrder(membershipTypeList, 0, membership);
     }
+
+    public void manageRenewal(String membership, String membershipManageRenewal) {
+        openURL(URL_MEMBERSHIP_MANAGEMENT);
+        locateToAListOfItemsAndClickTheItem(manageRenewalButtonList, 0, 30);
+
+        //Loop variables
+        By upgradeButton;
+        String expectedMembership;
+
+        switch (membershipManageRenewal) {
+            case "Community":
+                upgradeButton = communityOptionModal;
+                expectedMembership = COMMUNITY;
+                break;
+            case "Active":
+                upgradeButton = upgradeToActiveButton;
+                expectedMembership = ACTIVE;
+                break;
+            case "Racer":
+                upgradeButton = upgradeToRacerButton;
+                expectedMembership = RACER;
+                break;
+            case "Ultimate Racer":
+                upgradeButton = upgradeToUltimateRacerButton;
+                expectedMembership = ULTIMATE_RACER;
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported membership type: " + membershipManageRenewal);
+        }
+
+        clickElementWithJSWithoutScrolling(upgradeButton, 30);
+        assertTextEqual(currentMembership, membership);
+        assertTextEqual(membershipAfterUpgrade, expectedMembership);
+
+        clickElementWithJSWithoutScrolling(confirmChangeButton, 30);
+
+    }
+
+    public void successfullyManageRenewal(String membershipManageRenewal) {
+        String accountMembershipFirstName = signUpPage.returnFirstName();
+        String accountMembershipLastName = signUpPage.returnLastName();
+
+        String renewalDate = getTextFromListByIndex(expirationDateList, 0);
+        String successStatusMessageManageRenewal = accountMembershipFirstName + " " + accountMembershipLastName + "'s " + SUCCESS_MESSAGE_MANAGE_RENEWAL + membershipManageRenewal + " on the " + renewalDate;
+        String manageRenewalMembershipTypeMessage = "Your membership type will change to " + membershipManageRenewal + " on this date";
+
+        assertTextEqual(successStatusMessage, successStatusMessageManageRenewal, 30);
+
+        assertTextContainsByOrder(manageRenewalMembershipTypeList, 0, manageRenewalMembershipTypeMessage);
+
+    }
+
+    public void manageRenewalForInvalidCase() {
+        openURL(URL_MEMBERSHIP_MANAGEMENT);
+    }
+
+    public void unableToManageRenewalForInvalidCase() {
+        verifyElementDisable(manageRenewalButtonList);
+    }
+
 }
 

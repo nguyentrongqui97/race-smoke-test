@@ -354,6 +354,14 @@ public class WebUI {
         LogUtils.info("Click element: " + by);
     }
 
+    public static void scrollToElement(By by) {
+        waitForPageLoaded();
+        WebElement element = DriverManager.getDriver().findElement(by);
+        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getDriver();
+        js.executeScript("arguments[0].click();", element);
+        LogUtils.info("Scroll to element: " + by);
+    }
+
     public static void sendText(By by, String value) {
         waitForPageLoaded();
         waitForElementVisible(by);
@@ -379,14 +387,52 @@ public class WebUI {
         waitForPageLoaded();
         waitForElementVisible(by);
         String text = getWebElement(by).getText();
-        LogUtils.info("Get text: " + text);
+        LogUtils.info("Get text: " + text + " from element: " + by);
+    }
+
+    public static String getTextAndReturn(By by) {
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        String text = getWebElement(by).getText();
+        LogUtils.info("Get text: " + text + " from element: " + by);
+        return text;
+    }
+
+    public static String getTextFromListByIndex(By by, int index) {
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        List<WebElement> listItems = DriverManager.getDriver().findElements(by);
+
+        if (!listItems.isEmpty() && index < listItems.size()) {
+            String text = listItems.get(index).getText();
+            LogUtils.info("Get text: " + text + " from element: " + by + " at index: " + index);
+            return text;
+        } else {
+            LogUtils.error("No element found at index " + index + " for: " + by);
+            return "";
+        }
+    }
+
+    public static String getTextFromListByIndex(By by, int index, int timeOut) {
+        waitForPageLoaded();
+        waitForElementVisible(by, timeOut);
+        List<WebElement> listItems = DriverManager.getDriver().findElements(by);
+
+        if (!listItems.isEmpty() && index < listItems.size()) {
+            String text = listItems.get(index).getText();
+            LogUtils.info("Get text: " + text + " from element: " + by + " at index: " + index);
+            return text;
+        } else {
+            LogUtils.error("No element found at index " + index + " for: " + by);
+            return "";
+        }
     }
 
     public static void getTextInAttribute(By by) {
         waitForPageLoaded();
         waitForElementVisible(by);
         String text = getWebElement(by).getAttribute("value");
-        LogUtils.info("Get text: " + text);
+        LogUtils.info("Get text: " + text + " from element: " + by);
     }
 
     public static void getCurrentURL(String expectedUrl) {
@@ -539,7 +585,8 @@ public class WebUI {
 
     public static void locateToAListOfItemsAndClickTheItem(By by, int itemOrder) {
         waitForPageLoaded();
-        waitForElementVisible(by);
+//        waitForElementVisible(by);
+        waitForElementClickable(by);
         List<WebElement> listItems = DriverManager.getDriver().findElements(by);
 
         if (!listItems.isEmpty()) {
@@ -552,7 +599,8 @@ public class WebUI {
 
     public static void locateToAListOfItemsAndClickTheItem(By by, int itemOrder, int timeOut) {
         waitForPageLoaded();
-        waitForElementVisible(by, timeOut);
+//        waitForElementVisible(by, timeOut);
+        waitForElementClickable(by, timeOut);
         List<WebElement> listItems = DriverManager.getDriver().findElements(by);
 
         if (!listItems.isEmpty()) {
@@ -589,4 +637,77 @@ public class WebUI {
         Assert.assertTrue(actualText.contains(expectedSubstring),
                 "Text does not contain expected substring. Actual: " + actualText + ", Expected to contain: " + expectedSubstring);
     }
+
+    public static boolean isElementDisabled(By by) {
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        WebElement element = getWebElement(by);
+        boolean isDisabled = !element.isEnabled();
+
+        LogUtils.info("Element " + by + " is " + (isDisabled ? "disabled" : "enabled"));
+        return isDisabled;
+    }
+
+    public static boolean isElementDisabled(By by, int timeOut) {
+        waitForPageLoaded();
+        waitForElementVisible(by, timeOut);
+        WebElement element = getWebElement(by);
+        boolean isDisabled = !element.isEnabled();
+
+        LogUtils.info("Element " + by + " is " + (isDisabled ? "disabled" : "enabled"));
+        return isDisabled;
+    }
+
+    public static boolean isElementDisabledByOrder(By by, int itemOrder) {
+        waitForPageLoaded();
+        waitForElementVisible(by);
+        List<WebElement> elements = DriverManager.getDriver().findElements(by);
+
+        if (elements.isEmpty()) {
+            LogUtils.error("No elements found for locator: " + by);
+            throw new NoSuchElementException("No elements found for locator: " + by);
+        }
+
+        if (itemOrder >= elements.size()) {
+            LogUtils.error("Item order " + itemOrder + " is out of bounds for locator: " + by);
+            throw new IndexOutOfBoundsException("Item order out of bounds: " + itemOrder);
+        }
+
+        WebElement element = elements.get(itemOrder);
+        boolean isDisabled = !element.isEnabled();
+
+        LogUtils.info("Element " + by + " at index " + itemOrder + " is " + (isDisabled ? "disabled." : "enabled."));
+        return isDisabled;
+    }
+
+    public static boolean isElementDisabledByOrder(By by, int itemOrder, int timeOut) {
+        waitForPageLoaded();
+        waitForElementVisible(by, timeOut);
+        List<WebElement> elements = DriverManager.getDriver().findElements(by);
+
+        if (elements.isEmpty()) {
+            LogUtils.error("No elements found for locator: " + by);
+            throw new NoSuchElementException("No elements found for locator: " + by);
+        }
+
+        if (itemOrder >= elements.size()) {
+            LogUtils.error("Item order " + itemOrder + " is out of bounds for locator: " + by);
+            throw new IndexOutOfBoundsException("Item order out of bounds: " + itemOrder);
+        }
+
+        WebElement element = elements.get(itemOrder);
+        boolean isDisabled = !element.isEnabled();
+
+        LogUtils.info("Element " + by + " at index " + itemOrder + " is " + (isDisabled ? "disabled." : "enabled.") + " in " + timeOut);
+        return isDisabled;
+    }
+
+    public static void verifyElementDisable(By by) {
+        Assert.assertTrue(isElementDisabled(by), "Element " + by + " is not disabled as expected.");
+    }
+
+    public static void verifyElementDisableByOrder(By by, int itemOrder) {
+        Assert.assertTrue(isElementDisabledByOrder(by, itemOrder), "Element " + by + " it not disabled as expected.");
+    }
+
 }
