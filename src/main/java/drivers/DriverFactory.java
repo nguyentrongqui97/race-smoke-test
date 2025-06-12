@@ -25,6 +25,8 @@ public class DriverFactory {
         if(ConstantGlobal.HEADLESS == true) {
             options.addArguments("--headless=new");
             options.addArguments("window-size=1800,900");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
         } else {
             options.addArguments("--start-maximized");
         }
@@ -41,6 +43,8 @@ public class DriverFactory {
         if(ConstantGlobal.HEADLESS == true) {
             options.addArguments("--headless=new");
             options.addArguments("window-size=1800,900");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
         } else {
             options.addArguments("--start-maximized");
         }
@@ -57,6 +61,8 @@ public class DriverFactory {
         if(ConstantGlobal.HEADLESS == true) {
             options.addArguments("--headless=new");
             options.addArguments("window-size=1800,900");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
         } else {
             options.addArguments("--start-maximized");
         }
