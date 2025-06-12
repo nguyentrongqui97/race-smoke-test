@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
         plugin = {"pretty",
                 "html:target/cucumber-reports/Add_Junior_Profile.html",
                 "json:target/cucumber-reports/Add_Junior_Profile.json"},
-        tags = "@SMOKE"
+        monochrome = true
 )
 
 @Test

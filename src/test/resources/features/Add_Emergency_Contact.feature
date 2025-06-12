@@ -1,6 +1,6 @@
 Feature: Add Emergency Contacts
 
-  @SMOKE
+  @SMOKE @EMERGENCY
   Scenario Outline: Successfully add an emergency contact
     Given A user successfully logs in as a "<membership>" paid via "<paymentMethod>"
     When the user adds information for "<numberOfEmergencyContact>" emergency contact

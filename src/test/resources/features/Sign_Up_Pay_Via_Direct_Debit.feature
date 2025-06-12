@@ -1,6 +1,6 @@
 Feature: Sign up for an account paying via Direct Debit
 
-  @SMOKE
+  @SMOKE @SIGNUP_DD
   Scenario Outline: Sign up for a new account "<membership>" via Direct Debit
     Given a user successfully registers for an account
     When the user chooses and pays for the "<membership>" via "<paymentMethod>"

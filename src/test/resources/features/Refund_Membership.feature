@@ -1,6 +1,6 @@
 Feature: Refund membership
 
-  @SMOKE
+  @SMOKE @REFUND_CC
   Scenario Outline: Successfully refund a membership via Credit-Debit
     Given A user successfully logs in as a "<membership>" paid via "<signUpPaymentMethod>"
     And the user upgrades the "<membership>" to "<upgradedMembership>" paying via "<upgradedPaymentMethod>"
@@ -13,7 +13,7 @@ Feature: Refund membership
       | Community  |                     | Racer              | Credit-Debit          |
       | Active     | Credit-Debit        | Ultimate Racer     | Credit-Debit          |
 
-  @SMOKE
+  @SMOKE @REFUND_dd
   Scenario Outline: Successfully refund a membership via Direct Debit
     Given A user successfully logs in as a "<membership>" paid via "<signUpPaymentMethod>"
     And the user upgrades the "<membership>" to "<upgradedMembership>" paying via "<upgradedPaymentMethod>"

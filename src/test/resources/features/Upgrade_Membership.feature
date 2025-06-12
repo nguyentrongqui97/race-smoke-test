@@ -1,6 +1,6 @@
 Feature: Upgrade membership
 
-  @SMOKE
+  @SMOKE @UPGRADE_CC
   Scenario Outline: Successfully upgrade a membership via Credit-Debit
     Given A user successfully logs in as a "<currentMembership>" paid via "<signUpPaymentMethod>"
     When the user upgrades the "<currentMembership>" to "<upgradedMembership>" paying via "<upgradedPaymentMethod>"
@@ -11,7 +11,7 @@ Feature: Upgrade membership
       | Community         |                     | Active             | Credit-Debit          |
       | Active            | Credit-Debit        | Racer              | Credit-Debit          |
 
-  @SMOKE
+  @SMOKE @UPGRADE_DD
   Scenario Outline: Successfully upgrade a membership via Direct Debit
     Given A user successfully logs in as a "<currentMembership>" paid via "<signUpPaymentMethod>"
     When the user upgrades the "<currentMembership>" to "<upgradedMembership>" paying via "<upgradedPaymentMethod>"

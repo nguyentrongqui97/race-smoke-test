@@ -1,6 +1,6 @@
-@SMOKE
 Feature: Log-in
 
+  @SMOKE @LOGIN
   Scenario Outline: Successfully log into with "<membershipType>" user
     Given a user is on the login page
     When the user inputs "<username>" and "<password>"
@@ -12,4 +12,3 @@ Feature: Log-in
       | Active         | btfautotestactivemembership@mailinator.com | Testing123! |
       | Racer          | btfautotestracermembership@mailinator.com  | Testing123! |
       | Ultimate Racer | btfautotestultimateracer@mailinator.com    | Testing123! |
-

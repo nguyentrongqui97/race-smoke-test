@@ -1,6 +1,7 @@
+
 Feature: Sign up for an account paying via Credit-Debit
 
-  @SMOKE
+  @SMOKE @SIGNUP_CC_COMMUNITY
   Scenario Outline: Sign up for a new account "<membership>" via Credit-Debit
     Given a user successfully registers for an account
     When the user chooses and pays for the "<membership>" via "<paymentMethod>"
