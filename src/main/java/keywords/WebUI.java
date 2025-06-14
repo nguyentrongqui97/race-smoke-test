@@ -126,13 +126,16 @@ public class WebUI {
         Assert.assertTrue(DriverManager.getDriver().findElement(by).isDisplayed(), message);
     }
 
-
-    public static boolean verifyElementVisibleReturnBoolean(By by) {
-        WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(by));
-        System.out.println("Verify " + by + " is displayed.");
-        Assert.assertEquals(DriverManager.getDriver().findElement(by).isDisplayed(), "Element not visible.");
-        return true;
+    public static boolean isElementVisible(By by) {
+        try {
+            WebDriverWait wait = new WebDriverWait(DriverManager.getDriver(), Duration.ofSeconds(EXPLICIT_TIMEOUT));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+            System.out.println("Element is visible: " + by);
+            return true;
+        } catch (TimeoutException | NoSuchElementException e) {
+            System.out.println("Element is NOT visible: " + by);
+            return false;
+        }
     }
 
     public static void waitForElementVisible(By by) {
@@ -158,7 +161,7 @@ public class WebUI {
             wait.until(ExpectedConditions.visibilityOfElementLocated(by));
         } catch (Throwable error) {
             LogUtils.error("Time out waiting for element visible." + by.toString() + " in " + timeOut + " seconds.");
-            Assert.fail("Time out waiting for element visible.");
+            Assert.fail("Time out waiting for element visible." + by + " in " + timeOut + " seconds.");
         }
     }
 
@@ -217,7 +220,7 @@ public class WebUI {
             wait.until(ExpectedConditions.presenceOfElementLocated(by));
         } catch (Throwable error) {
             LogUtils.error("Time out waiting for element visible." + by.toString());
-            Assert.fail("Time out waiting for element visible.");
+            Assert.fail("Time out waiting for element visible." + by);
         }
     }
 
@@ -230,7 +233,7 @@ public class WebUI {
             wait.until(ExpectedConditions.presenceOfElementLocated(by));
         } catch (Throwable error) {
             LogUtils.error("Time out waiting for element visible." + by.toString());
-            Assert.fail("Time out waiting for element visible.");
+            Assert.fail("Time out waiting for element visible." + by);
         }
     }
 
@@ -279,7 +282,7 @@ public class WebUI {
             wait.until(ExpectedConditions.elementToBeClickable(by));
         } catch (Throwable error) {
             LogUtils.error("Time out waiting for element visible." + by.toString());
-            Assert.fail("Time out waiting for element visible.");
+            Assert.fail("Time out waiting for element visible." + by);
         }
     }
 
@@ -291,8 +294,8 @@ public class WebUI {
                     Duration.ofMillis(500));
             wait.until(ExpectedConditions.elementToBeClickable(by));
         } catch (Throwable error) {
-            LogUtils.error("Time out waiting for element visible." + by.toString());
-            Assert.fail("Time out waiting for element visible.");
+            LogUtils.error("Time out waiting for element visible." + by.toString() + " in " + timeOut);
+            Assert.fail("Time out waiting for element visible." + by + " in " + timeOut);
         }
     }
 
@@ -313,7 +316,7 @@ public class WebUI {
         waitForPageLoaded();
         waitForElementClickable(by, timeOut);
         getWebElement(by).click();
-        LogUtils.info("Click element: " + by);
+        LogUtils.info("Click element: " + by + " in " + timeOut);
     }
 
     public static void clickElementWithJS(By by) {

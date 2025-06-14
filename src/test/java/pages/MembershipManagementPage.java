@@ -33,6 +33,7 @@ public class MembershipManagementPage {
     static By manageRenewalMembershipTypeList = By.xpath("//h6[text()='Expiration:']/following::p[contains(text(),'Your membership type will change to')]");
     static By confirmChangeButton = By.xpath("//button[contains(text(),'Confirm change')]");
     static By expirationDateList = By.xpath("//p[contains(text(),'renew')]/b");
+    static By closeButtonNotificationBanner = By.cssSelector("button[aria-label='Close']");
 
 
     public void upgradeAMembership(String beforeUpgradeMembership, String upgradedMembership, String upgradedPaymentMethod) {
@@ -64,12 +65,11 @@ public class MembershipManagementPage {
         assertTextEqual(currentMembership, beforeUpgradeMembership);
         assertTextEqual(membershipAfterUpgrade, expectedMembership);
 
-        if ("Credit-Debit".equalsIgnoreCase(upgradedPaymentMethod)) {
+        if (CREDIT_DEBIT.equalsIgnoreCase(upgradedPaymentMethod)) {
             clickCheckBox(creditDebitCardRadioButton);
+        } else if (DIRECT_DEBIT.equalsIgnoreCase(upgradedPaymentMethod) && COMMUNITY.equalsIgnoreCase(beforeUpgradeMembership)) {
+            clickCheckBox(directDebitRadioButton);
         }
-//        else {
-//            clickCheckBox(directDebitRadioButton);
-//        }
 
         clickElementWithJSWithoutScrolling(confirmUpgradeButton, 20);
 
@@ -84,7 +84,7 @@ public class MembershipManagementPage {
         assertTextEqual(successStatusMessage,
                 accountMembershipFirstName + " " + accountMembershipLastName + "'s " + SUCCESS_MESSAGE_UPGRADE_MEMBERSHIP + membership,
                 20);
-
+        clickElementWithJS(closeButtonNotificationBanner);
         assertTextContainsByOrder(membershipTypeList, 0, membership, 30);
     }
 
@@ -105,7 +105,7 @@ public class MembershipManagementPage {
         assertTextEqual(successStatusMessage,
                 accountMembershipFirstName + " " + accountMembershipLastName + "'s " + SUCCESS_MESSAGE_REFUND_MEMBERSHIP + membership + " membership",
                 30);
-
+        clickElementWithJS(closeButtonNotificationBanner);
         assertTextContainsByOrder(membershipTypeList, 0, membership);
     }
 
@@ -155,6 +155,7 @@ public class MembershipManagementPage {
         String manageRenewalMembershipTypeMessage = "Your membership type will change to " + membershipManageRenewal + " on this date";
 
         assertTextEqual(successStatusMessage, successStatusMessageManageRenewal, 30);
+        clickElementWithJS(closeButtonNotificationBanner);
 
         assertTextContainsByOrder(manageRenewalMembershipTypeList, 0, manageRenewalMembershipTypeMessage);
 

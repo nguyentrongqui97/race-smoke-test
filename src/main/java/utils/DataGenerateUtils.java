@@ -44,7 +44,7 @@ public class DataGenerateUtils {
     public static LocalDate generateRandomValidDate() {
         Random random = new Random();
         LocalDate startDate = LocalDate.of(1950, 1, 1);
-        LocalDate endDate = LocalDate.of(2009, 12, 28);
+        LocalDate endDate = LocalDate.of(2008, 12, 28);
         long days = ChronoUnit.DAYS.between(startDate, endDate);
         return startDate.plusDays(random.nextInt((int) days + 1));
     }

@@ -8,7 +8,7 @@ Feature: Manage renewal
     Then the user should not be able to complete the renewal process.
     Examples:
       | membership | paymentMethod |
-      | Community  | Direct Debit  |
+      | Community  |               |
 
   @SMOKE @RENEWAL_CC
   Scenario Outline: Memberships paid via Credit-Debit cannot manage renewal

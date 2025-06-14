@@ -21,5 +21,7 @@ public class ConstantSystemValues {
     public static final String STRIPE_CARD_EXPIRY = PropertiesHelpers.getValue("STRIPE_CARD_EXPIRY");
     public static final String STRIPE_CARD_CVC = PropertiesHelpers.getValue("STRIPE_CARD_CVC");
     public final static String SUCCESS_MESSAGE_REFUND_MEMBERSHIP = PropertiesHelpers.getValue("SUCCESS_MESSAGE_REFUND_MEMBERSHIP");
+    public final static String CREDIT_DEBIT = PropertiesHelpers.getValue("CREDIT_DEBIT");
+    public final static String DIRECT_DEBIT = PropertiesHelpers.getValue("DIRECT_DEBIT");
 
 }

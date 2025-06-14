@@ -248,14 +248,24 @@ public class SignUpPage extends CommonPage {
         sendText(goCardlessFirstname, firstNameData);
         sendText(goCardlessLastname, lastNameData);
         sendText(goCardlessEmail, paymentEmailData);
-        //Commented out because of behavior changes, Direct Debit cannot choose payment method when upgrading
-//        clickElement(goCardLessEnterAddressManuallyButton);
-//        sendText(goCardlessBillingAddressLine1, addressLine1Data);
-//        sendText(goCardlessCity, cityData);
-//        sendText(goCardLessPostcode, postcodeData);
+
+        if (isElementVisible(goCardLessEnterAddressManuallyButton)) {
+            clickElement(goCardLessEnterAddressManuallyButton);
+            sendText(goCardlessBillingAddressLine1, addressLine1Data);
+            sendText(goCardlessCity, cityData);
+            sendText(goCardLessPostcode, postcodeData);
+        }
+
         clickElement(goCardlessContinueButton);
         clickElementWithJS(goCardlessSelectBankSuccessOption);
-        clickElementWithJS(goCardlessConfirmAndContinueButton);
+
+        if (isElementVisible(goCardlessSetUpThisDirectDebitButton)) {
+            clickElementWithJS(goCardlessSetUpThisDirectDebitButton);
+        }
+
+        if (isElementVisible(goCardlessConfirmAndContinueButton)) {
+            clickElementWithJS(goCardlessConfirmAndContinueButton);
+        }
         clickElementWithJS(goCardlessContinueToManualWebLoginButton);
     }
 
