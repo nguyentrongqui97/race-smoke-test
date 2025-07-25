@@ -18,7 +18,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static constants.ConstantGlobal.*;
 import static keywords.WebUI.*;
 
@@ -27,6 +26,9 @@ public class MailGeneratorHelpers {
     private String mainTabHandle;
     private By consentButton = By.cssSelector("button.fc-cta-consent");
     private String emailAddress;
+
+    static By otpEmail = By.cssSelector("#maillist tr");
+    static By otpCode = By.xpath("//p[contains(text(), 'Your verification code is:')]/following-sibling::p[1]");
 
     public MailGeneratorHelpers(WebDriver driver) {
         this.driver = driver;
@@ -77,7 +79,7 @@ public class MailGeneratorHelpers {
 
         while (System.currentTimeMillis() - startTime < 180000) {
             try {
-                List<WebElement> rows = driver.findElements(By.cssSelector("#maillist tr"));
+                List<WebElement> rows = driver.findElements(otpEmail);
 
                 for (WebElement row : rows) {
                     if (row.getText().contains(targetSender)) {
@@ -86,7 +88,7 @@ public class MailGeneratorHelpers {
 
                         // Wait for email body to load and extract OTP
                         WebElement otpParagraph = wait.until(ExpectedConditions
-                                .visibilityOfElementLocated(By.cssSelector("div.mailinhtml:nth-child(1) > p:nth-child(6)")));
+                                .visibilityOfElementLocated(otpCode));
 
                         String text = otpParagraph.getText();
                         Matcher matcher = Pattern.compile("\\b\\d{6}\\b").matcher(text);
@@ -251,14 +253,14 @@ public class MailGeneratorHelpers {
 
         while (System.currentTimeMillis() - startTime < 300000) {
             try {
-                List<WebElement> rows = driver.findElements(By.cssSelector("#maillist tr"));
+                List<WebElement> rows = driver.findElements(otpEmail);
 
                 for (WebElement row : rows) {
                     if (row.getText().contains(EMAIL_TARGET_SENDER)) {
                         row.findElement(By.cssSelector("a.row-link")).click();
 
                         WebElement otpParagraph = wait.until(ExpectedConditions
-                                .visibilityOfElementLocated(By.cssSelector("div.mailinhtml:nth-child(1) > p:nth-child(6)")));
+                                .visibilityOfElementLocated(otpCode));
 
                         String text = otpParagraph.getText();
                         Matcher matcher = Pattern.compile("\\b\\d{6}\\b").matcher(text);
